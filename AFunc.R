@@ -9,11 +9,13 @@
 #'@param j
 #'@param TPU
 #'@param gm
+#'@param Kc
+#'@param Ko
 #'@name AFunc
 
-Afunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm){
-  ac = AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
+Afunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2){
+  ac = AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2)
   aj = AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
   ap = ApFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
-  p.min(c(ac,aj,ap))
+  pmin(ac,aj,ap)
 }

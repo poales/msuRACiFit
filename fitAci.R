@@ -11,15 +11,32 @@
 #' @param name_assimilation The name given to the assimilation column in "data"
 #' @param name_ci Name given to the Ci column in "data"
 
-ficAci <- function(data,forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,initialGuess=NA,bound_l=c(1,1,1,.001,.001,0,0),
+ficAci <- function(data,gammastar=3.52,O2=21,initialGuess=NA,forceValues = c(NA,NA,NA,NA,NA,NA,NA),bound_l=c(1,1,1,.001,.001,0,0),
                    bound_h=c(1000,1000,1000,30,30,1,.75),name_assimilation ="A",name_ci=c("pCi","Ci")){
   locs <- match(tolower(name_ci),tolower(colnames(data)))
   loc <- min(na.omit(locs))
   pCi <- data[,loc]
   AData <- data[name_assimilation]
-  myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2,pCi)
+  myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2,pCi,AData)
   if(is.na(initialGuess)){
     initialGuess <- genGuess(AData)
   }
-  
+  #Process the guesses, and the bounds, for which values have been forced
+  initialGuess <- initialGuess[is.na(forceValues)]
+  bound_l <- bound_l[is.na(forceValues)]
+  bound_h <- bound_h[is.na(forceValues)]
+  minpack.lm::nls.lm(par=initialGuess,lower=bound_l,upper = bound_h,fn = myFun)
 }
+
+
+l <- "C:/Users/Alan/Desktop/aci fitting project/ideal_curve.csv"
+require(tidyverse)
+data <- read_csv(l)
+gammastar=3.52
+O2=21
+initialGuess=NA
+forceValues = c(NA,NA,NA,NA,NA,NA,NA)
+bound_l=c(1,1,1,.001,.001,0,0)
+bound_h=c(1000,1000,1000,30,30,1,.75)
+name_assimilation ="A"
+name_ci=c("pCi","Ci")
