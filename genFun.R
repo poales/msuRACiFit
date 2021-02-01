@@ -87,7 +87,6 @@ genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pC
       aS <- params[i]
       i <- i+1
     }
-    
     # Vcmax <- params[1]
     # j <- params[2]
     # TPU <- params[3]
@@ -106,5 +105,5 @@ genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pC
     y.out <- Afunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
     return(y-y.out)
   }
-  return(gn)
+  return(fn)
 }
