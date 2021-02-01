@@ -1,14 +1,14 @@
-Package: msu-r-aci-fit
+Package: msuRACiFit
 Title: Fitting A/Ci data
 Version: 0.0.0.9000
-Authors@R: person("Alan", "McClain", email = "mcclai54@msu.edu", role = c("aut", "cre"))
-Authors@R: person("Luke", "Gregory", email = "grego215@msu.edu", role = c("aut", "cre"))
-Authors@R: person("Thomas", "Sharkey", email = "tsharkey@msu.edu", role = c("aut"))
-Authors@R: person("Berkley", "Walker", email = "berkley@msu.edu", role = c("aut"))
+Authors@R: c(person("Alan", "McClain", email = "mcclai54@msu.edu", role = c("aut", "cre")),
+	person("Luke", "Gregory", email = "grego215@msu.edu", role = "aut"),
+	person("Thomas", "Sharkey", email = "tsharkey@msu.edu", role = "aut"),
+	person("Berkley", "Walker", email = "berkley@msu.edu", role = "aut"))
 Description: Fits parameters 
-Depends: R (>= 3.5.2)
+Depends: R (>= 3.5.2), minpack.lm
 License: MIT
 Encoding: UTF-8
 LazyData: true
-Imports: tidyverse, minpack.lm
-RoxygenNote: 6.1.1
+Imports: tidyverse
+RoxygenNote: 7.1.1
