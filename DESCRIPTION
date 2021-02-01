@@ -1,0 +1,14 @@
+Package: msu-r-aci-fit
+Title: Fitting A/Ci data
+Version: 0.0.0.9000
+Authors@R: person("Alan", "McClain", email = "mcclai54@msu.edu", role = c("aut", "cre"))
+Authors@R: person("Luke", "Gregory", email = "grego215@msu.edu", role = c("aut", "cre"))
+Authors@R: person("Thomas", "Sharkey", email = "tsharkey@msu.edu", role = c("aut"))
+Authors@R: person("Berkley", "Walker", email = "berkley@msu.edu", role = c("aut"))
+Description: Fits parameters 
+Depends: R (>= 3.5.2)
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Imports: tidyverse
+RoxygenNote: 6.1.1
