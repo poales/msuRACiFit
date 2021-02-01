@@ -27,16 +27,3 @@ ficAci <- function(data,gammastar=3.52,O2=21,initialGuess=NA,forceValues = c(NA,
   bound_h <- bound_h[is.na(forceValues)]
   minpack.lm::nls.lm(par=initialGuess,lower=bound_l,upper = bound_h,fn = myFun)
 }
-
-
-l <- "C:/Users/Alan/Desktop/aci fitting project/ideal_curve.csv"
-require(tidyverse)
-data <- read_csv(l)
-gammastar=3.52
-O2=21
-initialGuess=NA
-forceValues = c(NA,NA,NA,NA,NA,NA,NA)
-bound_l=c(1,1,1,.001,.001,0,0)
-bound_h=c(1000,1000,1000,30,30,1,.75)
-name_assimilation ="A"
-name_ci=c("pCi","Ci")
