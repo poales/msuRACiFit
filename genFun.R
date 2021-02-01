@@ -101,34 +101,8 @@ genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pC
     Ko <- 12.3772-
       (23.72 / (0.008314*(273.15 + 25)))
     Cc <- pCi - y/gm
-    #
-    CoefFunc <- function( aG , gammastar, Cc ){
-      1-((1-aG)*gammastar/Cc)
-    }
-    #
-    AcFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm){
-      coef = CoefFunc( aG , gammastar, Cc )
-      coef * (Vcmax *Cc)/((Cc +Kc * (1 + O/Ko)))-Rd
-    }
-    #
-    AjFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm){
-      coef = CoefFunc( aG , gammastar, Cc )
-      coef * j/(4+(4+8*aG+4*aS)*2*((1-aG)*gammastar)/Cc)-Rd # fit a
-    }
-    # Assimilation assuming TPU limitation
-    ApFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm){
-      coef = CoefFunc( aG , gammastar, Cc )
-      result = coef * (3*TPU/(1-0.5*(1+3*aG+4*aS)*2*(1-aG)*gammastar/Cc))-Rd
-      # insert infinite y-values where the x-value (Cc) is low
-      result[Cc < 20] = Inf
-      return(result)
-    }
-    Afunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm){
-      ac = AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
-      aj = AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
-      ap = ApFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
-      p.min(c(ac,aj,ap))
-    }
+    
+    
     y.out <- Afunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
     return(y-y.out)
   }
