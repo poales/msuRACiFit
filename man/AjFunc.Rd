@@ -6,6 +6,23 @@
 \usage{
 AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
 }
+\arguments{
+\item{Cc}{CO2 concentration at the site of carboxylation}
+
+\item{aG}{The proportion of glycerate carbon that exits photorespiration as glycine}
+
+\item{aS}{The proportion of glycerate carbon that exits photorespiration as serine}
+
+\item{Rd}{Day respiration}
+
+\item{Vcmax}{Michaelis-Menten VMax for carboxylation}
+
+\item{j}{Maximum rate of electron transport given current conditions}
+
+\item{TPU}{Rate of triose phosphate usage}
+
+\item{gm}{Mesophyll conductance to carbon}
+}
 \description{
 Generates the J-limited data
 }

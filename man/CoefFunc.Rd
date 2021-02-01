@@ -6,6 +6,13 @@
 \usage{
 CoefFunc(aG, gammastar, Cc)
 }
+\arguments{
+\item{aG}{Proportion of glycerate carbon released from photorespiration as glycine}
+
+\item{gammastar}{The Cc compensation point for rubisco}
+
+\item{Cc}{Concentration of carbon dioxide at the site of carboxylation}
+}
 \description{
 Generates a little data which makes life a lot easier
 }

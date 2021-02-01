@@ -7,6 +7,29 @@
 \usage{
 Afunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm, Kc, Ko, O2)
 }
+\arguments{
+\item{Cc}{CO2 concentration at the site of carboxylation}
+
+\item{aG}{The proportion of glycerate carbon that exits photorespiration as glycine}
+
+\item{aS}{The proportion of glycerate carbon that exits photorespiration as serine}
+
+\item{Rd}{Day respiration}
+
+\item{Vcmax}{Michaelis-Menten VMax for carboxylation}
+
+\item{j}{Maximum rate of electron transport given current conditions}
+
+\item{TPU}{Rate of triose phosphate usage}
+
+\item{gm}{Mesophyll conductance to carbon}
+
+\item{Kc}{Michaelis-Menten parameter, binding coeff for carbon}
+
+\item{Ko}{Michaelis-Menten parameter, binding coeff for oxygen}
+
+\item{O2}{Oxygen concentration}
+}
 \description{
 Generates the limited A data
 }
