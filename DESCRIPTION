@@ -10,5 +10,5 @@ Depends: R (>= 3.5.2)
 License: MIT
 Encoding: UTF-8
 LazyData: true
-Imports: tidyverse
+Imports: tidyverse, minpack.lm
 RoxygenNote: 6.1.1
