@@ -10,6 +10,7 @@
 #' @param bound_h the maximum value to be considered for each parameter
 #' @param name_assimilation The name given to the assimilation column in "data"
 #' @param name_ci Name given to the Ci column in "data"
+#' @export
 
 ficAci <- function(data,gammastar=3.52,O2=21,initialGuess=NA,forceValues = c(NA,NA,NA,NA,NA,NA,NA),bound_l=c(1,1,1,.001,.001,0,0),
                    bound_h=c(1000,1000,1000,30,30,1,.75),name_assimilation ="A",name_ci=c("pCi","Ci")){
