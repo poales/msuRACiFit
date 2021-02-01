@@ -9,9 +9,10 @@
 #'@param j Maximum rate of electron transport given current conditions
 #'@param TPU Rate of triose phosphate usage
 #'@param gm Mesophyll conductance to carbon
+#'@param gammastar Cc compensation point
 #'@name AjFunc
 
-AjFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm){
+AjFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar){
   coef = CoefFunc( aG , gammastar, Cc )
   coef * j/(4+(4+8*aG+4*aS)*2*((1-aG)*gammastar)/Cc)-Rd # fit a
 }

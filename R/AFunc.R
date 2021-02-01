@@ -12,11 +12,12 @@
 #'@param Kc Michaelis-Menten parameter, binding coeff for carbon
 #'@param Ko Michaelis-Menten parameter, binding coeff for oxygen
 #'@param O2 Oxygen concentration
+#'@param gammastar Cc compensation point
 #'@name AFunc
 
-Afunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2){
-  ac = AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2)
-  aj = AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
-  ap = ApFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
+Afunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar){
+  ac = AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar)
+  aj = AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar)
+  ap = ApFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar)
   pmin(ac,aj,ap)
 }

@@ -12,9 +12,10 @@
 #'@param Kc Michaelis-Menten parameter, binding coeff for carbon
 #'@param Ko Michaelis-Menten parameter, binding coeff for oxygen
 #'@param O2 Oxygen concentration
+#'@param gammastar Cc compensation point
 #'@name AcFunc
 
-AcFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2){
+AcFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar){
   coef = CoefFunc( aG , gammastar, Cc )
   coef * (Vcmax *Cc)/((Cc +Kc * (1 + O2/Ko)))-Rd
 }

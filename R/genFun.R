@@ -55,9 +55,13 @@ genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pC
   }else{
     as.is.forced <- F
   }
-  gammastar <- 3.52
+  gammastar <- gammastar
   O <- O2
   y <- assimilationData
+  Kc <- 35.9774-
+    (80.99 / (0.008314*(273.15 + 25)))
+  Ko <- 12.3772-
+    (23.72 / (0.008314*(273.15 + 25)))
   fn <- function(params) {
     
     i <- 1
@@ -89,22 +93,10 @@ genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pC
       aS <- params[i]
       i <- i+1
     }
-    # Vcmax <- params[1]
-    # j <- params[2]
-    # TPU <- params[3]
-    # gm <- params[4]
-    # Rd <- params[5]
-    # aG <- params[6]
-    # aS <- params[7]
-    Kc <- 35.9774-
-      (80.99 / (0.008314*(273.15 + 25)))
-    Ko <- 12.3772-
-      (23.72 / (0.008314*(273.15 + 25)))
     
     Cc <- pCi - y/gm
     
-    
-    y.out <- Afunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2)    
+    y.out <- Afunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar)    
     return(unlist(y-y.out))
   }
   return(fn)
