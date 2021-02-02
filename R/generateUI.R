@@ -7,21 +7,42 @@
 generateUi <- function(){
 
   # Define UI for dataset viewer app ----
-  ui <- shiny::fluidPage(
+  ui <- shiny::fixedPage(
+    tags$style(HTML("
+        input[type=number] {
+              -moz-appearance:textfield;
+        }
+        input[type=number]::{
+              -moz-appearance:textfield;
+        }
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+        }
+    ")),
 
     # App title ----
-    shiny::titlePanel("ACI FITTING"),
+    shiny::titlePanel("A/Ci Fitting"),
 
     shiny::fluidRow( #top row: graphs, params, etc
-      shiny::column(width=6,
+      shiny::column(width=5,
              # shiny::actionButton("add", "Add Value"),
              # shiny::actionButton("remove","Remove Value"),
              # shiny::uiOutput("xax"),
              # shiny::uiOutput("yax"),
              # shiny::verbatimTextOutput("y11"),
-             # shiny::actionButton("stop", "Stop", class = "btn-danger", onclick = "setTimeout(function(){window.close();}, 100);")),
+             shiny::fluidRow(
+                shiny::actionButton("stop", "Stop", class = "btn-danger", onclick = "setTimeout(function(){window.close();}, 100);"),
+                shiny::actionButton("fit","Fit curve!"),
+                shiny::actionButton("write","Write data!")
+             ),
+             
              shiny::fluidRow( #top row: load/write data
-               fileInput('myFile','Pick CSV file!',accept='.csv')
+               fileInput('myFile','Pick a CSV file',accept='.csv')
+             ),
+             shiny::fluidRow(#pick location where to write
+               shiny::textInput("writeloc","Write data to:")
              ),
              shiny::fluidRow( #second row: parameters, need 5 columns
                #label row...
@@ -133,7 +154,7 @@ generateUi <- function(){
                shiny::fluidRow(
                  shiny::column(width=2, #label
                                mainPanel(
-                                 p("rd")
+                                 p("rL")
                                )
                  ),
                  shiny::column(width=3, #value
@@ -188,10 +209,10 @@ generateUi <- function(){
                  )
                )
 
-             )
+             ) #end of parameters block
       ),
 
-      shiny::column(width=5, plotly::plotlyOutput("distPlot")
+      shiny::column(width=7, plotly::plotlyOutput("distPlot")
              #DT::dataTableOutput('x11')
 
       )
@@ -200,11 +221,26 @@ generateUi <- function(){
       #mainPanel(
     ),
     shiny::fluidRow(
-      shiny::column(width=6,
-             DT::dataTableOutput("chosen")
+      shiny::column(width=7,
+             tableOutput("chosen")
       ),
-      shiny::column(width=4,
-             shiny::tableOutput("brush")
+      shiny::column(width=5,
+            shiny::fluidRow(
+              shiny::mainPanel(width=3,
+                               p("Sum of Squares Residual: ")
+              ),
+              shiny::verbatimTextOutput(outputId = "sumres")
+            ),
+            shiny::fluidRow(
+              headerPanel("")
+            ),
+            shiny::fluidRow(
+              shiny::numericInput("tleaf",label="Leaf Temp",value=25),
+              shiny::numericInput("patm",label="Pressure (kPa)",value=101),
+              shiny::numericInput("gammastar",label="Gamma* (kPa)",value=3.52)
+            )
+            
+        
       )
     )
   )

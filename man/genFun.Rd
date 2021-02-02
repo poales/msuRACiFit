@@ -9,7 +9,8 @@ genFun(
   gammastar = 3.52,
   O2 = 21,
   pCi,
-  assimilationData
+  assimilationData,
+  tleaf = 25
 )
 }
 \arguments{

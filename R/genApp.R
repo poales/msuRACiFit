@@ -1,18 +1,13 @@
 #'genApp
 #'
-#'Takes a data table input and opens a shiny app for manual processing.
-#'@param input The input data table to be displayed and worked up
+#'Opens the graphic user interface for the fitAci subroutines
 #'@name genApp
 #'@export
 
 
 
-genApp <- function(input){
-  myenv <- new.env()
-  myenv$input <- input
+genApp <- function(){
   ui <- generateUi()
-  serv <- generateServer(myenv)
+  serv <- generateServer()
   shiny::runApp(shiny::shinyApp(ui,serv))
-  return(myenv$output)
-
 }

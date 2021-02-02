@@ -12,7 +12,7 @@
 
 
 
-genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pCi,assimilationData){
+genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pCi,assimilationData,tleaf=25){
   if(!is.na(forceValues[1])){
     Vcmax <- forceValues[1]
     vc.is.forced <- T
@@ -58,8 +58,8 @@ genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pC
   gammastar <- gammastar
   O <- O2
   y <- assimilationData
-  Kc <- exp(35.9774-(80.99 / (0.008314*(273.15 + 25))))
-  Ko <- exp(12.3772-(23.72 / (0.008314*(273.15 + 25))))
+  Kc <- exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf))))
+  Ko <- exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))
   fn <- function(params) {
     
     i <- 1

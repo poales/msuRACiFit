@@ -4,7 +4,7 @@
 \alias{AjFunc}
 \title{AjFunc}
 \usage{
-AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
+AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm, gammastar)
 }
 \arguments{
 \item{Cc}{CO2 concentration at the site of carboxylation}
@@ -22,6 +22,8 @@ AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm)
 \item{TPU}{Rate of triose phosphate usage}
 
 \item{gm}{Mesophyll conductance to carbon}
+
+\item{gammastar}{Cc compensation point}
 }
 \description{
 Generates the J-limited data

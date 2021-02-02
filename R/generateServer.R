@@ -1,42 +1,83 @@
 #'generateServer
 #'
 #'Generates the server side of the shiny application.
-#'@param myEnv A parameter containing an environment with import data and export data fields.
 #'@name generateServer
 
 
 
-generateServer <- function(myEnv){
+generateServer <- function(myEnv=NULL){
   # Define server logic to summarize and view selected dataset ----
-  server <- function(input, output) {
-    df <- myEnv$input
-    chosenDat <- tibble::tibble()
-
-    output$xax <- renderUI({
-      selectInput(inputId = "xax",
-                  label = "x Axis Var:",
-                  choices = colnames(df))
+  server <- function(input, output, session) {
+    df <- NULL
+    tleaf=25
+    params <- c(0,0,0,0,0,0,0)
+    lbounds <- c(0,0,0,0,0,0,0)
+    ubounds <- c(0,0,0,0,0,0,0)
+    fitdat <- NA
+    
+    output$sumres <- renderText({
+      sumres
     })
-    output$yax <- renderUI({
-      selectInput(inputId = "yax",
-                  label = "y Axis Var:",
-                  choices = colnames(df))
+    sumres <- 0
+    names <- c("vcmax","j","tpu","gm","rd","ag","as")
+    observeEvent(eventExpr=input$write,{
+      fn <- gsub(pattern = "(.*)\\..*",replacement="\\1",input$myFile$name)
+      #possibly rewrite the write location
+      write_loc <- gsub("\\\\", "/", input$writeloc)
+      filename <- paste(fn,"output.csv")
+      print(filename)
+      loc <- paste0(write_loc,"/",filename)
+      readr::write_csv(tibble::tibble("VcMax" = input$vcmax, "J"=input$j,"TPU" = input$tpu,"gm" = input$gm,"rL"=input$rd,"ag"=input$ag,"as"=input$as),file = loc)
     })
-
-
-    sel <- reactiveValues(table =tibble::tibble(),
-                          chosen=tibble::tibble(),
-                          xaxis = colnames(df)[1],
-                          yaxis=colnames(df)[2])
-
-    sel$xaxis <- colnames(df)[1]
-    sel$yaxis <- colnames(df)[2]
-
-    observeEvent(eventExpr = input$xax,{
-      sel$xaxis <- input$xax
+    observeEvent(eventExpr = input$fit,{
+      params <- as.numeric(c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as))
+      print("Params:")
+      print(params)
+      print(typeof(params))
+      lbounds <- as.numeric(c(input$vcmaxlbound,input$jlbound,input$tpulbound,input$gmlbound,input$rdlbound,input$aglbound,input$aslbound))
+      print("lbounds:")
+      print(lbounds)
+      print(typeof(lbounds))
+      ubounds <- as.numeric(c(input$vcmaxubound,input$jubound,input$tpuubound,input$gmubound,input$rdubound,input$agubound,input$asubound))
+      print("ubounds:")
+      print(ubounds)
+      print(typeof(ubounds))
+      locks <- c(input$vcmaxlock,input$jlock,input$tpulock,input$gmlock,input$rdlock,input$aglock,input$aslock)
+      print("locks:")
+      print(locks)
+      print(typeof(locks))
+      locks2 <- c(NA,NA,NA,NA,NA,NA,NA)
+      for(i in 1:length(locks)){
+        if(locks[i]){
+          locks2[i] <- params[i]
+        }
+      }
+      if(!is.null(df())){
+        #fit the curve
+        print(df())
+        print(typeof(df()))
+        print(tibble::tibble(df()))
+        print(colnames(tibble::tibble(df())))
+        fitdat <- fitACi(data=tibble::tibble(df()),input$gammastar,O2 = 21,initialGuess = params,forceValues = locks2,bound_l = lbounds,
+               bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf)
+        print(fitdat$par)
+        #update the interface
+        i <- 1 #track location on page
+        j <- 1 #track location in fitdat$par
+        for(i in 1:7){
+          if(!locks[i]){
+            shiny::updateNumericInput(session,names[i],value = fitdat$par[j])
+            j <- j+1
+          }
+        }
+      }
     })
-    observeEvent(eventExpr = input$yax,{
-      sel$yaxis <- input$yax
+    df <- reactive({
+      if(is.null(input$myFile)){
+        NULL
+      }else{
+        readr::read_csv(input$myFile$datapath)
+      }
     })
     # to renderPlot to indicate that:
     #
@@ -44,64 +85,52 @@ generateServer <- function(myEnv){
     #    re-executed when inputs (input$bins) change
     # 2. Its output type is a plot
     output$distPlot <- plotly::renderPlotly({
-      a <- ggplot2::ggplot(df,mapping=ggplot2::aes_string(x=sel$xaxis,y=sel$yaxis))+
-        ggplot2::geom_point()+
-        ggplot2::theme_minimal()
+      #inFile <- input$myFile
+      params <- c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as)
+      if(is.null(df())){
+        a <- ggplot2::ggplot(df(),mapping=ggplot2::aes(x="Cc",y="A"))+
+          ggplot2::theme_classic()
+      }else{
+        
+        a <- reconstituteGraph(df(),params,
+                               tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar)
+        
+      }
       plotly::ggplotly(a,source="A")
-
-
+      
+      
+      
     })
+    output$chosen <- renderTable({
+      #inFile <- input$myFile
+      params <- c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as)
+      if(is.null(df()))
+        NULL
+      else{
+        x <- reconstituteTable(df(),params,
+                        tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar)
+        sumres <- sum(x$`res^2`)
+        output$sumres <- renderText({
+          sumres
+        })
+        x
+      }
+
+    },server=FALSE)
+    
 
 
     #output$click <- renderPrint({
     #  d <- event_data("plotly_click")
     #  if (is.null(d)) "Click events appear here (double-click to clear)" else d$pointNumber + 1
     #})
-    output$brush <- shiny::renderTable({
-      d <- plotly::event_data("plotly_selected")
-      if (is.null(d)){
-        return(df)
-      }  else {
-        y <- t(colMeans(
-          df[d$pointNumber+1,purrr::map_lgl(df,is.numeric)],
-          na.rm=T
-        ))
-        z <- df[d$pointNumber[1]+1,purrr::map_lgl(df,is.character)]
-        y <- bind_cols(data.frame(y),z)
-        sel$table <- y
-        return(y)
-      }
-      #chosenDat$sel
-    })
 
-    observeEvent(input$chosen_selected_id, {
-      str(input$chosen_selected_id)
-    })
 
-    shiny::observeEvent(input$add,{
-      sel$chosen <- dplyr::bind_rows(isolate(sel$chosen), isolate(sel$table))
-    })
-    shiny::observeEvent(input$remove,{
-      sel$chosen <- sel$chosen[-input$chosen_rows_selected,]
-    })
 
-    #observeEvent()
 
     shiny::observeEvent(input$stop, {
       shiny::stopApp(message("App stopped"))
     })
-
-    output$chosen <- DT::renderDataTable({
-      #message("entered chosen renderTable")
-      if(nrow(sel$chosen)!=0){
-        q <- dplyr::mutate_if(sel$chosen,is.numeric,round,4)
-        myEnv$output <<- q
-        tibble::rownames_to_column(q)[,-1]
-      } else {
-        sel$chosen
-      }
-
-    },selection="multiple",server=FALSE)
     #output$x11 = DT::renderDataTable(iris[,1:3], server = FALSE, selection = 'single')
 
 

@@ -11,7 +11,7 @@
 #' @export
 
 
-reconstituteGraph <- function(data,fitParams,tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=101){
+reconstituteGraph <- function(data,fitParams,tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=101,gammastar=3.52){
   locs <- match(tolower(name_ci),tolower(colnames(data)))
   loc <- min(na.omit(locs))
   pCi <- data[,loc]
@@ -21,7 +21,6 @@ reconstituteGraph <- function(data,fitParams,tleaf,name_assimilation="A", name_c
   AData <- data[name_assimilation]
   Kc <- exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf))))
   Ko <- exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))
-  gammastar <- 3.52
   O2 <- 21
   vcmax <- fitParams[1]
   j <- fitParams[2]

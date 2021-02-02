@@ -5,7 +5,7 @@
 \alias{Afunc}
 \title{AFunc}
 \usage{
-Afunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm, Kc, Ko, O2)
+Afunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm, Kc, Ko, O2, gammastar)
 }
 \arguments{
 \item{Cc}{CO2 concentration at the site of carboxylation}
@@ -29,6 +29,8 @@ Afunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm, Kc, Ko, O2)
 \item{Ko}{Michaelis-Menten parameter, binding coeff for oxygen}
 
 \item{O2}{Oxygen concentration}
+
+\item{gammastar}{Cc compensation point}
 }
 \description{
 Generates the limited A data

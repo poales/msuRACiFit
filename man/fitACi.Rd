@@ -13,7 +13,9 @@ fitACi(
   bound_l = c(1, 1, 1, 0.001, 0.001, 0, 0),
   bound_h = c(1000, 1000, 1000, 30, 30, 1, 0.75),
   name_assimilation = "A",
-  name_ci = c("pCi", "Ci")
+  name_ci = c("pCi", "Ci"),
+  pressure = 101,
+  tleaf = 25
 )
 }
 \arguments{
@@ -34,6 +36,8 @@ fitACi(
 \item{name_assimilation}{The name given to the assimilation column in "data"}
 
 \item{name_ci}{Name given to the Ci column in "data"}
+
+\item{pressure}{Atmospheric pressure in kPa}
 }
 \description{
 Fit A/Ci curves using forced values, and bounds
