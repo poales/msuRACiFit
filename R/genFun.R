@@ -8,7 +8,6 @@
 #' @param pCi The internal pressure of CO2
 #' @param assimilationData The measured assimilation data
 #' @name genFun
-#' @export
 
 
 
