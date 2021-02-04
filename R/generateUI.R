@@ -8,7 +8,7 @@ generateUi <- function(){
 
   # Define UI for dataset viewer app ----
   ui <- shiny::fixedPage(
-    tags$style(HTML("
+    shiny::tags$style(shiny::HTML("
         input[type=number] {
               -moz-appearance:textfield;
         }
@@ -39,7 +39,7 @@ generateUi <- function(){
              ),
              
              shiny::fluidRow( #top row: load/write data
-               fileInput('myFile','Pick a CSV file',accept='.csv')
+               shiny::fileInput('myFile','Pick a CSV file',accept='.csv')
              ),
              shiny::fluidRow(#pick location where to write
                shiny::textInput("writeloc","Write data to:")
@@ -48,28 +48,28 @@ generateUi <- function(){
                #label row...
                shiny::fluidRow(
                  shiny::column(width=2, #label
-                               mainPanel(
-                                 p("Param")
+                               shiny::mainPanel(
+                                 shiny::p("Param")
                                )
                  ),
                  shiny::column(width=2, #value
-                               mainPanel(
-                                 p("Value")
+                               shiny::mainPanel(
+                                 shiny::p("Value")
                                )
                  ),
                  shiny::column(width=2, #lockbox
-                               mainPanel(
-                                 p("Lock")
+                               shiny::mainPanel(
+                                 shiny::p("Lock")
                                )
                  ),
                  shiny::column(width=3, #lbound
-                               mainPanel(
-                                 p("LowBound")
+                               shiny::mainPanel(
+                                 shiny::p("LowBound")
                                )
                  ),
                  shiny::column(width=3,#ubound
-                               mainPanel(
-                                 p("HiBound")
+                               shiny::mainPanel(
+                                 shiny::p("HiBound")
                                )
                  )
                ),
@@ -77,8 +77,8 @@ generateUi <- function(){
                #now make a series of rows for each variable, with 5 columns each
                shiny::fluidRow(
                  shiny::column(width=2, #label
-                               mainPanel(
-                                 p("VcMax")
+                               shiny::mainPanel(
+                                 shiny::p("VcMax")
                                )
                 ),
                 shiny::column(width=3, #value
@@ -96,8 +96,8 @@ generateUi <- function(){
                ),
                shiny::fluidRow(
                  shiny::column(width=2, #label
-                               mainPanel(
-                                 p("J")
+                               shiny::mainPanel(
+                                 shiny::p("J")
                                )
                  ),
                  shiny::column(width=3, #value
@@ -115,8 +115,8 @@ generateUi <- function(){
                ),
                shiny::fluidRow(
                  shiny::column(width=2, #label
-                               mainPanel(
-                                 p("TPU")
+                               shiny::mainPanel(
+                                 shiny::p("TPU")
                                )
                  ),
                  shiny::column(width=3, #value
@@ -134,8 +134,8 @@ generateUi <- function(){
                ),
                shiny::fluidRow(
                  shiny::column(width=2, #label
-                               mainPanel(
-                                 p("gm")
+                               shiny::mainPanel(
+                                 shiny::p("gm")
                                )
                  ),
                  shiny::column(width=3, #value
@@ -153,8 +153,8 @@ generateUi <- function(){
                ),
                shiny::fluidRow(
                  shiny::column(width=2, #label
-                               mainPanel(
-                                 p("rL")
+                               shiny::mainPanel(
+                                 shiny::p("rL")
                                )
                  ),
                  shiny::column(width=3, #value
@@ -172,8 +172,8 @@ generateUi <- function(){
                ),
                shiny::fluidRow(
                  shiny::column(width=2, #label
-                               mainPanel(
-                                 p("ag")
+                               shiny::mainPanel(
+                                 shiny::p("ag")
                                )
                  ),
                  shiny::column(width=3, #value
@@ -191,8 +191,8 @@ generateUi <- function(){
                ),
                shiny::fluidRow(
                  shiny::column(width=2, #label
-                               mainPanel(
-                                 p("as")
+                               shiny::mainPanel(
+                                 shiny::p("as")
                                )
                  ),
                  shiny::column(width=3, #value
@@ -222,17 +222,17 @@ generateUi <- function(){
     ),
     shiny::fluidRow(
       shiny::column(width=7,
-             tableOutput("chosen")
+                    shiny::tableOutput("chosen")
       ),
       shiny::column(width=5,
             shiny::fluidRow(
               shiny::mainPanel(width=3,
-                               p("Sum of Squares Residual: ")
+                               shiny::p("Sum of Squares Residual: ")
               ),
               shiny::verbatimTextOutput(outputId = "sumres")
             ),
             shiny::fluidRow(
-              headerPanel("")
+              shiny::headerPanel("")
             ),
             shiny::fluidRow(
               shiny::numericInput("tleaf",label="Leaf Temp",value=25),

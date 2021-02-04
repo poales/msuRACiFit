@@ -15,7 +15,7 @@ generateServer <- function(myEnv=NULL){
     ubounds <- c(0,0,0,0,0,0,0)
     fitdat <- NA
     
-    output$sumres <- renderText({
+    output$sumres <- shiny::renderText({
       sumres
     })
     sumres <- 0
