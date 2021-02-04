@@ -11,7 +11,7 @@
 #' @export
 
 
-reconstituteTable <- function(data,fitParams,tleaf=25,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=101,gammastar=3.52){
+reconstituteTable <- function(data,fitParams,tleaf=25,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=101,gammastar=3.52,O2=21){
   locs <- match(tolower(name_ci),tolower(colnames(data)))
   loc <- min(na.omit(locs))
   pCi <- data[,loc]
@@ -21,7 +21,6 @@ reconstituteTable <- function(data,fitParams,tleaf=25,name_assimilation="A", nam
   AData <- data[name_assimilation]
   Kc <- exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf))))
   Ko <- exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))
-  O2 <- 21
   vcmax <- fitParams[1]
   j <- fitParams[2]
   tpu <- fitParams[3]
@@ -42,9 +41,9 @@ reconstituteTable <- function(data,fitParams,tleaf=25,name_assimilation="A", nam
   for(i in 1:nrow(data2)){
     limiting_values[i] <- unname(data2[i,data2$`Limiting process`[i]+3])
   }
-  limiting_values <- bind_cols(unlist(limiting_values))
-  data2 <- add_column(data2,residual = data2$A-limiting_values$...1)
-  data2 <- add_column(data2,`res^2`=data2$residual^2)
+  limiting_values <- dplyr::bind_cols(unlist(limiting_values))
+  data2 <- tibble::add_column(data2,residual = data2$A-limiting_values$...1)
+  data2 <- tibble::add_column(data2,`res^2`=data2$residual^2)
   
   return(data2)
 }

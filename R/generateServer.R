@@ -58,7 +58,7 @@ generateServer <- function(myEnv=NULL){
         print(typeof(df()))
         print(tibble::tibble(df()))
         print(colnames(tibble::tibble(df())))
-        fitdat <- fitACi(data=tibble::tibble(df()),input$gammastar,O2 = 21,initialGuess = params,forceValues = locks2,bound_l = lbounds,
+        fitdat <- fitACi(data=tibble::tibble(df()),input$gammastar,O2 = input$oxygen,initialGuess = params,forceValues = locks2,bound_l = lbounds,
                bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf)
         print(fitdat$par)
         #update the interface
@@ -93,7 +93,7 @@ generateServer <- function(myEnv=NULL){
       }else{
         
         a <- reconstituteGraph(df(),params,
-                               tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar)
+                               tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen)
         
       }
       plotly::ggplotly(a,source="A")
@@ -108,7 +108,7 @@ generateServer <- function(myEnv=NULL){
         NULL
       else{
         x <- reconstituteTable(df(),params,
-                        tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar)
+                        tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen)
         sumres <- sum(x$`res^2`)
         output$sumres <- renderText({
           sumres
