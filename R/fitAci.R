@@ -11,11 +11,12 @@
 #' @param name_assimilation The name given to the assimilation column in "data"
 #' @param name_ci Name given to the Ci column in "data"
 #' @param pressure Atmospheric pressure in kPa
+#' @param ignoreTPU Whether to fit TPU or not. Leave false if you don't know what you're doing!
 #' @name fitACi
 #' @export
 
 fitACi <- function(data,gammastar=3.52,O2=21,initialGuess=NA,forceValues = c(NA,NA,NA,NA,NA,NA,NA),bound_l=c(1,1,1,.001,.001,0,0),
-                   bound_h=c(1000,1000,1000,30,30,1,.75),name_assimilation ="A",name_ci=c("pCi","Ci"),pressure = 101,tleaf=25){
+                   bound_h=c(1000,1000,1000,30,30,1,.75),name_assimilation ="A",name_ci=c("pCi","Ci"),pressure = 101,tleaf=25,ignoreTPU=F){
   locs <- match(tolower(name_ci),tolower(colnames(data)))
   loc <- min(na.omit(locs))
   pCi <- data[,loc]
@@ -24,7 +25,7 @@ fitACi <- function(data,gammastar=3.52,O2=21,initialGuess=NA,forceValues = c(NA,
   }
   AData <- data[name_assimilation]
   print(AData)
-  myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2,pCi,AData)
+  myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2,pCi,AData,ignoreTPU)
   if(is.na(initialGuess)){
     initialGuess <- genGuess(AData)
   }

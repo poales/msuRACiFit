@@ -59,7 +59,7 @@ generateServer <- function(myEnv=NULL){
         print(tibble::tibble(df()))
         print(colnames(tibble::tibble(df())))
         fitdat <- fitACi(data=tibble::tibble(df()),input$gammastar,O2 = input$oxygen,initialGuess = params,forceValues = locks2,bound_l = lbounds,
-               bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf)
+               bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf,ignoreTPU=input$ignoreTPU)
         print(fitdat$par)
         #update the interface
         i <- 1 #track location on page

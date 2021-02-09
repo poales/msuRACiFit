@@ -1,6 +1,6 @@
-#'AFunc
+#'AFuncMinusTPU
 #'
-#'Generates the limited A data
+#'Generates the limited A data, ignoring TPU
 #'@param Cc CO2 concentration at the site of carboxylation
 #'@param aG The proportion of glycerate carbon that exits photorespiration as glycine
 #'@param aS The proportion of glycerate carbon that exits photorespiration as serine
@@ -13,11 +13,12 @@
 #'@param Ko Michaelis-Menten parameter, binding coeff for oxygen
 #'@param O2 Oxygen concentration
 #'@param gammastar Cc compensation point
-#'@name AFunc
+#'@name AFuncMinusTPU
 
-AFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar){
+AFuncMinusTPU <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar){
   ac = AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar)
   aj = AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar)
-  ap = ApFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar)
-  pmin(ac,aj,ap)
+  #ap = ApFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar)
+  #pmin(ac,aj,ap)
+  pmin(ac,aj)
 }
