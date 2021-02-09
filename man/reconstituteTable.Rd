@@ -11,7 +11,8 @@ reconstituteTable(
   name_assimilation = "A",
   name_ci = c("pCi", "Ci"),
   pressure = 101,
-  gammastar = 3.52
+  gammastar = 3.52,
+  O2 = 21
 )
 }
 \arguments{

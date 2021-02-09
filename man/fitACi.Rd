@@ -15,7 +15,8 @@ fitACi(
   name_assimilation = "A",
   name_ci = c("pCi", "Ci"),
   pressure = 101,
-  tleaf = 25
+  tleaf = 25,
+  ignoreTPU = F
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ fitACi(
 \item{name_ci}{Name given to the Ci column in "data"}
 
 \item{pressure}{Atmospheric pressure in kPa}
+
+\item{ignoreTPU}{Whether to fit TPU or not. Leave false if you don't know what you're doing!}
 }
 \description{
 Fit A/Ci curves using forced values, and bounds

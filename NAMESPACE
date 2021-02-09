@@ -2,6 +2,5 @@
 
 export(fitACi)
 export(genApp)
-export(genFun)
 export(reconstituteGraph)
 export(reconstituteTable)

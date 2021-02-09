@@ -10,7 +10,8 @@ genFun(
   O2 = 21,
   pCi,
   assimilationData,
-  tleaf = 25
+  tleaf = 25,
+  ignoreTPU = F
 )
 }
 \arguments{
@@ -23,6 +24,8 @@ genFun(
 \item{pCi}{The internal pressure of CO2}
 
 \item{assimilationData}{The measured assimilation data}
+
+\item{ignoreTPU}{Whether to fit TPU or not. Leave false if you don't know what you're doing!}
 }
 \description{
 This function accepts some of the parameters required to fit an A/Ci curve.

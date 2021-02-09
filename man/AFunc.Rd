@@ -2,10 +2,9 @@
 % Please edit documentation in R/AFunc.R
 \name{AFunc}
 \alias{AFunc}
-\alias{Afunc}
 \title{AFunc}
 \usage{
-Afunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm, Kc, Ko, O2, gammastar)
+AFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm, Kc, Ko, O2, gammastar)
 }
 \arguments{
 \item{Cc}{CO2 concentration at the site of carboxylation}
