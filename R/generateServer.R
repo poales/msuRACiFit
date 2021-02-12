@@ -58,12 +58,14 @@ generateServer <- function(myEnv=NULL){
         print(typeof(df()))
         print(tibble::tibble(df()))
         print(colnames(tibble::tibble(df())))
+        print(input$ignoreTPU)
         fitdat <- fitACi(data=tibble::tibble(df()),input$gammastar,O2 = input$oxygen,initialGuess = params,forceValues = locks2,bound_l = lbounds,
                bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf,ignoreTPU=input$ignoreTPU)
         print(fitdat$par)
         #update the interface
         i <- 1 #track location on page
         j <- 1 #track location in fitdat$par
+        
         for(i in 1:7){
           if(!locks[i]){
             shiny::updateNumericInput(session,names[i],value = fitdat$par[j])

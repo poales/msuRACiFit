@@ -25,7 +25,7 @@ fitACi <- function(data,gammastar=3.52,O2=21,initialGuess=NA,forceValues = c(NA,
   }
   AData <- data[name_assimilation]
   print(AData)
-  myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2,pCi,AData,ignoreTPU)
+  myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2,pCi=pCi,assimilationData=AData,tleaf=tleaf,ignoreTPU=ignoreTPU)
   if(is.na(initialGuess)){
     initialGuess <- genGuess(AData)
   }
@@ -35,7 +35,5 @@ fitACi <- function(data,gammastar=3.52,O2=21,initialGuess=NA,forceValues = c(NA,
   print(initialGuess)
   bound_l <- bound_l[is.na(forceValues)]
   bound_h <- bound_h[is.na(forceValues)]
-  print(bound_l)
-  print(bound_h)
   minpack.lm::nls.lm(par=initialGuess,lower=bound_l,upper = bound_h,fn = myFun)
 }
