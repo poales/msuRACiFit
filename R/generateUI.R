@@ -41,7 +41,7 @@ generateUi <- function(){
              ),
              
              shiny::fluidRow( #top row: load/write data
-               shiny::fileInput('myFile','Pick a CSV file',accept='.csv')
+               shiny::fileInput('myFile','Pick a data file:')
              ),
              shiny::fluidRow(#pick location where to write
                shiny::textInput("writeloc","Write data to:")
