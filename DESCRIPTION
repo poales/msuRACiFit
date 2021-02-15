@@ -6,10 +6,14 @@ Authors@R: c(person("Alan", "McClain", email = "mcclai54@msu.edu", role = c("aut
 	person("Thomas", "Sharkey", email = "tsharkey@msu.edu", role = "aut"),
 	person("Berkley", "Walker", email = "berkley@msu.edu", role = "aut"))
 Description: Fits parameters 
-Depends: R (>= 3.5.2), minpack.lm
+Depends: R (>= 3.6)
+Remotes:
+	poales/readLicorData
 License: MIT
 Encoding: UTF-8
 LazyData: true
-Imports: tidyverse
+Imports:
+	tidyverse,
+	minpack.lm
 suggests: shiny
 RoxygenNote: 7.1.1

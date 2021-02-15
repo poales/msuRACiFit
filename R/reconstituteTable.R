@@ -7,11 +7,12 @@
 #' @param name_assimilation The name given to assimilation column in "data"
 #' @param name_ci The name given to the internal CO2 concentration column in "data"
 #' @param pressure The atmospheric pressure in kPa
+#' @param ignoreTPU Whether to fit TPU or not. Leave false if you don't know what you're doing!
 #' @name reconstituteTable
 #' @export
 
 
-reconstituteTable <- function(data,fitParams,tleaf=25,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=101,gammastar=3.52,O2=21){
+reconstituteTable <- function(data,fitParams,tleaf=25,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=101,gammastar=3.52,O2=21,ignoreTPU=F){
   locs <- match(tolower(name_ci),tolower(colnames(data)))
   loc <- min(na.omit(locs))
   pCi <- data[,loc]
@@ -34,8 +35,14 @@ reconstituteTable <- function(data,fitParams,tleaf=25,name_assimilation="A", nam
   pdat <- tibble::tibble(A=ApFunc(data2$Cc,ag,as,rd,vcmax,j,tpu,gm,gammastar),Cc=data2$Cc)
   #remap data rq
   #now I have to pick limitations and create a column with that data
-  data2 <- tibble::add_column(data2,"Rubisco Limited" = cdat$A,"ET Limited" = jdat$A, "TPU Limited" = pdat$A)
-  data2 <- tibble::add_column(data2, "Limiting process" = apply(data2[,4:6],1,FUN = which.min))
+  if(ignoreTPU){
+    data2 <- tibble::add_column(data2,"Rubisco Limited" = cdat$A,"ET Limited" = jdat$A)
+    data2 <- tibble::add_column(data2, "Limiting process" = apply(data2[,4:5],1,FUN = which.min))
+  }else{
+    data2 <- tibble::add_column(data2,"Rubisco Limited" = cdat$A,"ET Limited" = jdat$A, "TPU Limited" = pdat$A)
+    data2 <- tibble::add_column(data2, "Limiting process" = apply(data2[,4:6],1,FUN = which.min))
+  }
+  
   #now we have to show individual residuals
   limiting_values <-c()
   for(i in 1:nrow(data2)){

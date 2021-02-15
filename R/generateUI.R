@@ -35,7 +35,8 @@ generateUi <- function(){
              shiny::fluidRow(
                 shiny::actionButton("stop", "Stop", class = "btn-danger", onclick = "setTimeout(function(){window.close();}, 100);"),
                 shiny::actionButton("fit","Fit curve!"),
-                shiny::actionButton("write","Write data!")
+                shiny::actionButton("write","Write data!"),
+                shiny::actionButton("genGuess","Generate guesses")
              ),
              
              shiny::fluidRow( #top row: load/write data

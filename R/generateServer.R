@@ -29,50 +29,76 @@ generateServer <- function(myEnv=NULL){
       loc <- paste0(write_loc,"/",filename)
       readr::write_csv(tibble::tibble("VcMax" = input$vcmax, "J"=input$j,"TPU" = input$tpu,"gm" = input$gm,"rL"=input$rd,"ag"=input$ag,"as"=input$as),file = loc)
     })
+    observeEvent(eventExpr=input$genGuess,{
+      if(!is.null(df())){
+        locks2 <- c(NA,NA,NA,NA,NA,NA,NA)
+        for(i in 1:length(locks)){
+          if(locks()[i]){
+            locks2[i] <- params[i]
+          }
+        }
+        
+        AData <- df()["A"]
+        guessed <- genGuess(AData)
+        
+        i <- 1 #track location on page
+        j <- 1 #track location in fitdat$par
+        for(i in 1:7){
+          if(!locks()[i]){
+            shiny::updateNumericInput(session,names[i],value = guessed[i])
+          }
+        }
+      }
+    })
     observeEvent(eventExpr = input$fit,{
       params <- as.numeric(c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as))
-      print("Params:")
-      print(params)
-      print(typeof(params))
+      # print("Params:")
+      # print(params)
+      # print(typeof(params))
       lbounds <- as.numeric(c(input$vcmaxlbound,input$jlbound,input$tpulbound,input$gmlbound,input$rdlbound,input$aglbound,input$aslbound))
-      print("lbounds:")
-      print(lbounds)
-      print(typeof(lbounds))
+      # print("lbounds:")
+      # print(lbounds)
+      # print(typeof(lbounds))
       ubounds <- as.numeric(c(input$vcmaxubound,input$jubound,input$tpuubound,input$gmubound,input$rdubound,input$agubound,input$asubound))
-      print("ubounds:")
-      print(ubounds)
-      print(typeof(ubounds))
-      locks <- c(input$vcmaxlock,input$jlock,input$tpulock,input$gmlock,input$rdlock,input$aglock,input$aslock)
-      print("locks:")
-      print(locks)
-      print(typeof(locks))
+      # print("ubounds:")
+      # print(ubounds)
+      # print(typeof(ubounds))
+      #locks <- c(input$vcmaxlock,input$jlock,input$tpulock,input$gmlock,input$rdlock,input$aglock,input$aslock)
+      # print("locks:")
+      # print(locks())
+      # print(typeof(locks()))
       locks2 <- c(NA,NA,NA,NA,NA,NA,NA)
-      for(i in 1:length(locks)){
-        if(locks[i]){
+      for(i in 1:length(locks())){
+        if(locks()[i]){
           locks2[i] <- params[i]
         }
       }
+      print("locks:")
       if(!is.null(df())){
         #fit the curve
-        print(df())
-        print(typeof(df()))
-        print(tibble::tibble(df()))
-        print(colnames(tibble::tibble(df())))
-        print(input$ignoreTPU)
-        fitdat <- fitACi(data=tibble::tibble(df()),input$gammastar,O2 = input$oxygen,initialGuess = params,forceValues = locks2,bound_l = lbounds,
-               bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf,ignoreTPU=input$ignoreTPU)
-        print(fitdat$par)
-        #update the interface
+        #lets try looping it twice to get a better fit
+        #for(k in 1:2){
+          #print(df())
+          #print(typeof(df()))
+          #print(tibble::tibble(df()))
+          #print(colnames(tibble::tibble(df())))
+          #print(input$ignoreTPU)
+          fitdat <- fitACi(data=tibble::tibble(df()),input$gammastar,O2 = input$oxygen,initialGuess = params,forceValues = locks2,bound_l = lbounds,
+                           bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf,ignoreTPU=input$ignoreTPU)
+          #initialGuess <- 
+        #}
         i <- 1 #track location on page
         j <- 1 #track location in fitdat$par
-        
         for(i in 1:7){
-          if(!locks[i]){
+          if(!locks()[i]){
             shiny::updateNumericInput(session,names[i],value = fitdat$par[j])
             j <- j+1
           }
         }
+        
+        
       }
+        
     })
     df <- reactive({
       if(is.null(input$myFile)){
@@ -80,6 +106,9 @@ generateServer <- function(myEnv=NULL){
       }else{
         readr::read_csv(input$myFile$datapath)
       }
+    })
+    locks <- reactive({
+      c(input$vcmaxlock,input$jlock,input$tpulock,input$gmlock,input$rdlock,input$aglock,input$aslock)
     })
     # to renderPlot to indicate that:
     #
@@ -95,7 +124,7 @@ generateServer <- function(myEnv=NULL){
       }else{
         
         a <- reconstituteGraph(df(),params,
-                               tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen)
+                               tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
         
       }
       plotly::ggplotly(a,source="A")
@@ -110,7 +139,7 @@ generateServer <- function(myEnv=NULL){
         NULL
       else{
         x <- reconstituteTable(df(),params,
-                        tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen)
+                        tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
         sumres <- sum(x$`res^2`)
         output$sumres <- renderText({
           sumres
