@@ -16,9 +16,11 @@ reconstituteTable <- function(data,fitParams,tleaf=25,name_assimilation="A", nam
   locs <- match(tolower(name_ci),tolower(colnames(data)))
   loc <- min(na.omit(locs))
   pCi <- data[,loc]
+  
   if(!grepl(pattern="p",tolower(colnames(pCi)))){
     pCi <- pCi /1000000*1000*pressure
   }
+  pCi <- pCi[[1]]
   AData <- data[name_assimilation]
   Kc <- exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf))))
   Ko <- exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))

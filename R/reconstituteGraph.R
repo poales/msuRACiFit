@@ -12,7 +12,7 @@
 #' @export
 
 
-reconstituteGraph <- function(data,fitParams,tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=101,gammastar=3.52,O2=21,ignoreTPU=F){
+reconstituteGraph <- function(data,fitParams,tleaf=25,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=101,gammastar=3.52,O2=21,ignoreTPU=F){
   locs <- match(tolower(name_ci),tolower(colnames(data)))
   loc <- min(na.omit(locs))
   pCi <- data[,loc]
