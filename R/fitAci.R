@@ -22,9 +22,11 @@ fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3
   locs <- match(tolower(name_ci),tolower(colnames(data)))
   loc <- min(na.omit(locs))
   pCi <- data[,loc]
+  
   if(!grepl(pattern="p",tolower(colnames(pCi)))){
     pCi <- pCi /1000000*1000*pressure
   }
+  #pCi <- pCi[[1]]
   AData <- data[name_assimilation]
   myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2,pCi=pCi,assimilationData=AData,tleaf=tleaf,ignoreTPU=ignoreTPU)
   if(is.na(initialGuess)){
