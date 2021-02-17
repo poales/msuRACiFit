@@ -26,15 +26,12 @@ fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3
     pCi <- pCi /1000000*1000*pressure
   }
   AData <- data[name_assimilation]
-  print(AData)
   myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2,pCi=pCi,assimilationData=AData,tleaf=tleaf,ignoreTPU=ignoreTPU)
   if(is.na(initialGuess)){
     initialGuess <- genGuess(AData)
   }
   #Process the guesses, and the bounds, for which values have been forced
-  print(forceValues)
   initialGuess <- initialGuess[is.na(forceValues)]
-  print(initialGuess)
   bound_l <- bound_l[is.na(forceValues)]
   bound_h <- bound_h[is.na(forceValues)]
   minpack.lm::nls.lm(par=initialGuess,lower=bound_l,upper = bound_h,fn = myFun)
