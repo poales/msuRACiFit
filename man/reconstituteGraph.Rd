@@ -7,12 +7,13 @@
 reconstituteGraph(
   data,
   fitParams,
-  tleaf,
+  tleaf = 25,
   name_assimilation = "A",
   name_ci = c("pCi", "Ci"),
   pressure = 101,
   gammastar = 3.52,
-  O2 = 21
+  O2 = 21,
+  ignoreTPU = F
 )
 }
 \arguments{
@@ -27,6 +28,8 @@ reconstituteGraph(
 \item{name_ci}{The name given to the internal CO2 concentration column in "data"}
 
 \item{pressure}{The atmospheric pressure in kPa}
+
+\item{ignoreTPU}{Whether to fit TPU or not. Leave false if you don't know what you're doing!}
 }
 \description{
 Take fit data and send it back through to make a graph
