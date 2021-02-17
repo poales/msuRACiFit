@@ -3,16 +3,18 @@
 #' Take fit data and send it back through to make a graph
 #' @param data The original A/Ci data
 #' @param fitParams The returned params data from the fitting function
-#' @param tleaf The leaf temperature
 #' @param name_assimilation The name given to assimilation column in "data"
 #' @param name_ci The name given to the internal CO2 concentration column in "data"
-#' @param pressure The atmospheric pressure in kPa
+#' @param gammastar The Cc compensation point. Default: Tobacco.
+#' @param O2 The oxygen concentration in parts per hundred.
+#' @param pressure Atmospheric pressure in kPa
+#' @param tleaf The leaf temperature, in celsius
 #' @param ignoreTPU Whether to fit TPU or not. Leave false if you don't know what you're doing!
 #' @name reconstituteGraph
 #' @export
 
 
-reconstituteGraph <- function(data,fitParams,tleaf=25,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=101,gammastar=3.52,O2=21,ignoreTPU=F){
+reconstituteGraph <- function(data,fitParams,name_assimilation="A", name_ci=c("pCi","Ci"),gammastar=3.52,O2=21,pressure=101,tleaf=25,ignoreTPU=F){
   locs <- match(tolower(name_ci),tolower(colnames(data)))
   loc <- min(na.omit(locs))
   pCi <- data[,loc]

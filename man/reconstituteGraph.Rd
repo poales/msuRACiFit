@@ -7,12 +7,12 @@
 reconstituteGraph(
   data,
   fitParams,
-  tleaf = 25,
   name_assimilation = "A",
   name_ci = c("pCi", "Ci"),
-  pressure = 101,
   gammastar = 3.52,
   O2 = 21,
+  pressure = 101,
+  tleaf = 25,
   ignoreTPU = F
 )
 }
@@ -21,13 +21,17 @@ reconstituteGraph(
 
 \item{fitParams}{The returned params data from the fitting function}
 
-\item{tleaf}{The leaf temperature}
-
 \item{name_assimilation}{The name given to assimilation column in "data"}
 
 \item{name_ci}{The name given to the internal CO2 concentration column in "data"}
 
-\item{pressure}{The atmospheric pressure in kPa}
+\item{gammastar}{The Cc compensation point. Default: Tobacco.}
+
+\item{O2}{The oxygen concentration in parts per hundred.}
+
+\item{pressure}{Atmospheric pressure in kPa}
+
+\item{tleaf}{The leaf temperature, in celsius}
 
 \item{ignoreTPU}{Whether to fit TPU or not. Leave false if you don't know what you're doing!}
 }
