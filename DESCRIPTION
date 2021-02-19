@@ -14,6 +14,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
 	tidyverse,
-	minpack.lm
-suggests: shiny
+	minpack.lm,
+	shiny,
+	plotly
 RoxygenNote: 7.1.1
