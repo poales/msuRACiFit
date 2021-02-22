@@ -84,7 +84,8 @@ generateServer <- function(myEnv=NULL){
           #print(colnames(tibble::tibble(df())))
           #print(input$ignoreTPU)
           fitdat <- fitACi(data=tibble::tibble(df()),input$gammastar,O2 = input$oxygen,initialGuess = params,forceValues = locks2,bound_l = lbounds,
-                           bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf,ignoreTPU=input$ignoreTPU)
+                           bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf,ignoreTPU=input$ignoreTPU,
+                           maxiter=input$maxiter)
           #have to reset the "params" side...
           #params <- fitdat$par
         #}

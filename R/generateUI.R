@@ -241,7 +241,8 @@ generateUi <- function(){
               shiny::numericInput("patm",label="Pressure (kPa)",value=101),
               shiny::numericInput("gammastar",label="Gamma* (kPa)",value=3.52),
               shiny::numericInput("oxygen",label="Oxygen%",value=21),
-              shiny::checkboxInput("ignoreTPU",label="Ignore TPU",value = F)
+              shiny::checkboxInput("ignoreTPU",label="Ignore TPU",value = F),
+              shiny::numericInput("maxiter",label="Maximum Fitting Iterations",value=250)
             )
             
         
