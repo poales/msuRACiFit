@@ -60,35 +60,21 @@ generateServer <- function(myEnv=NULL){
       # print(lbounds)
       # print(typeof(lbounds))
       ubounds <- as.numeric(c(input$vcmaxubound,input$jubound,input$tpuubound,input$gmubound,input$rdubound,input$agubound,input$asubound))
-      # print("ubounds:")
-      # print(ubounds)
-      # print(typeof(ubounds))
+
       #locks <- c(input$vcmaxlock,input$jlock,input$tpulock,input$gmlock,input$rdlock,input$aglock,input$aslock)
-      # print("locks:")
-      # print(locks())
-      # print(typeof(locks()))
       locks2 <- c(NA,NA,NA,NA,NA,NA,NA)
       for(i in 1:length(locks())){
         if(locks()[i]){
           locks2[i] <- params[i]
         }
       }
-      print("locks:")
       if(!is.null(df())){
-        #fit the curve
-        #lets try looping it twice to get a better fit
-        #for(k in 1:2){
-          #print(df())
-          #print(typeof(df()))
-          #print(tibble::tibble(df()))
-          #print(colnames(tibble::tibble(df())))
-          #print(input$ignoreTPU)
-          fitdat <- fitACi(data=tibble::tibble(df()),input$gammastar,O2 = input$oxygen,initialGuess = params,forceValues = locks2,bound_l = lbounds,
-                           bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf,ignoreTPU=input$ignoreTPU,
-                           maxiter=input$maxiter)
-          #have to reset the "params" side...
-          #params <- fitdat$par
-        #}
+
+
+        fitdat <- fitACi(data=tibble::tibble(df()),input$gammastar,O2 = input$oxygen,initialGuess = params,forceValues = locks2,bound_l = lbounds,
+                         bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf,ignoreTPU=input$ignoreTPU,
+                         maxiter=input$maxiter)
+
         i <- 1 #track location on page
         j <- 1 #track location in fitdat$par
         for(i in 1:7){
@@ -106,7 +92,7 @@ generateServer <- function(myEnv=NULL){
       if(is.null(input$myFile)){
         NULL
       }else{
-        readr::read_csv(input$myFile$datapath)
+        interpFile(input$myFile$datapath)
       }
     })
     locks <- reactive({
