@@ -115,7 +115,19 @@ generateServer <- function(myEnv=NULL){
                                tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
         
       }
-      plotly::ggplotly(a,source="A")
+      plotly::config(plotly::layout(plotly::ggplotly(a,source="A"),
+        yaxis=list(
+          title=plotly::TeX("A~(\\mu mol m^{-2}s^{-1})") 
+        ),
+        xaxis=list(
+          title=plotly::TeX("Cc~(Pa)")
+        ),
+        legend=list(
+          orientation='h',
+          x=0,y=1.01
+        )
+      ),mathjax="cdn")
+        
       
       
       
@@ -135,7 +147,7 @@ generateServer <- function(myEnv=NULL){
         x
       }
 
-    },server=FALSE)
+    },server=FALSE,spacing="xs")
     
 
 

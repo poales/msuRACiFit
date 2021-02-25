@@ -26,7 +26,7 @@ generateUi <- function(){
     shiny::titlePanel("A/Ci Fitting"),
 
     shiny::fluidRow( #top row: graphs, params, etc
-      shiny::column(width=5,
+      shiny::column(width=6,
              # shiny::actionButton("add", "Add Value"),
              # shiny::actionButton("remove","Remove Value"),
              # shiny::uiOutput("xax"),
@@ -214,7 +214,7 @@ generateUi <- function(){
              ) #end of parameters block
       ),
 
-      shiny::column(width=7, plotly::plotlyOutput("distPlot")
+      shiny::column(width=6, plotly::plotlyOutput("distPlot",height = "500px")
              #DT::dataTableOutput('x11')
 
       )
@@ -223,10 +223,10 @@ generateUi <- function(){
       #mainPanel(
     ),
     shiny::fluidRow(
-      shiny::column(width=7,
+      shiny::column(width=8,
                     shiny::tableOutput("chosen")
       ),
-      shiny::column(width=5,
+      shiny::column(width=4,
             shiny::fluidRow(
               shiny::mainPanel(width=3,
                                shiny::p("Sum of Squares Residual: ")

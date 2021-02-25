@@ -40,21 +40,26 @@ reconstituteGraph <- function(data,fitParams,name_assimilation="A", name_ci=c("p
   if(ignoreTPU){
     myPlot <- ggplot2::ggplot()+
       ggplot2::geom_point(data2,mapping=ggplot2::aes(x=Cc,y=A),size=3)+
-      ggplot2::geom_point(cdat,mapping=ggplot2::aes(x=Cc,y=A,color="C"),size=1)+
-      ggplot2::geom_point(jdat,mapping=ggplot2::aes(x=Cc,y=A,color="J"),size=1)+
+      ggplot2::geom_point(cdat,mapping=ggplot2::aes(x=Cc,y=A,color="Rubisco"),size=1)+
+      ggplot2::geom_point(jdat,mapping=ggplot2::aes(x=Cc,y=A,color="RuBP-Regen"),size=1)+
       #ggplot2::geom_point(pdat,mapping=ggplot2::aes(x=Cc,y=A,color="P"),size=1)+
       ggplot2::scale_color_manual(values=c("red","blue","orange"))+
       ggplot2::ylim(0,max(data2$A)*1.5)+
-      ggplot2::theme_classic()
+      ggplot2::theme_classic()+
+      ggplot2::ylab(rlang::expr(italic("A")~"(\u03BCmol m"^-2*"s"^-1*")"))+
+      ggplot2::xlab(rlang::expr(italic("Cc")~"(Pa)"))
   }else{
     myPlot <- ggplot2::ggplot()+
       ggplot2::geom_point(data2,mapping=ggplot2::aes(x=Cc,y=A),size=3)+
-      ggplot2::geom_point(cdat,mapping=ggplot2::aes(x=Cc,y=A,color="C"),size=1)+
-      ggplot2::geom_point(jdat,mapping=ggplot2::aes(x=Cc,y=A,color="J"),size=1)+
-      ggplot2::geom_point(pdat,mapping=ggplot2::aes(x=Cc,y=A,color="P"),size=1)+
+      ggplot2::geom_point(cdat,mapping=ggplot2::aes(x=Cc,y=A,color="Rubisco"),size=1)+
+      ggplot2::geom_point(jdat,mapping=ggplot2::aes(x=Cc,y=A,color="RuBP-Regen"),size=1)+
+      ggplot2::geom_point(pdat,mapping=ggplot2::aes(x=Cc,y=A,color="TPU"),size=1)+
       ggplot2::scale_color_manual(values=c("red","blue","orange"))+
       ggplot2::ylim(0,max(data2$A)*1.5)+
-      ggplot2::theme_classic()
+      ggplot2::theme_classic()+
+      ggplot2::ylab(rlang::expr(italic("A")~"(\u03BCmol m"^-2*"s"^-1*")"))+
+      ggplot2::xlab(rlang::expr(italic("Cc")~"(Pa)"))
+      #ggplot2::xlab(expr("italic(Cc)"))
   }
   
   return(myPlot)
