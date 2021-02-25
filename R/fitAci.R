@@ -9,7 +9,7 @@
 #' @param pressure Atmospheric pressure in kPa
 #' @param tleaf The leaf temperature, in celsius
 #' @param initialGuess Initial guesses for fitting. Will generate ok guesses automatically if not provided
-#' @param forceValues A vector of forced values in order: VcMax, J, TPU, gm, Rd, aG, aS
+#' @param forceValues A vector of forced values in order: VcMax, J, TPU, gm, Rd, aG, aS. Include NAs where not forced, if you modify this!
 #' @param bound_l The minimum values to be considered for each parameter
 #' @param bound_h the maximum value to be considered for each parameter
 #' @param ignoreTPU Whether to fit TPU or not. Leave false if you don't know what you're doing!
@@ -37,7 +37,7 @@ fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3
   initialGuess <- initialGuess[is.na(forceValues)]
   bound_l <- bound_l[is.na(forceValues)]
   bound_h <- bound_h[is.na(forceValues)]
-  print(maxiter)
+  #print(maxiter)
   myfit <- minpack.lm::nls.lm(par=initialGuess,lower=bound_l,upper = bound_h,fn = myFun,control = minpack.lm::nls.lm.control(maxiter=maxiter,maxfev = 1250))
   print(myfit)
   return(myfit)

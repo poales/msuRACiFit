@@ -18,10 +18,10 @@
 
 
 fitComplete <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3.52,O2=21,pressure = 101,tleaf=25,initialGuess=NA,
-                        forceValues = c(NA,NA,NA,NA,NA,NA,NA),bound_l=c(1,1,1,.001,.001,0,0),
+                        forceValues = c(NA,NA,NA,NA,NA,NA,NA),bound_l=c(1,1,1,.001,.001,0,0,maxiter=250),
                         bound_h=c(1000,1000,1000,30,30,1,.75),ignoreTPU=F){
   aciFit <- fitACi(data=data, gammastar=gammastar, O2=O2, initialGuess = initialGuess, forceValues = forceValues, bound_l=bound_l,
-                   bound_h=bound_h,name_assimilation = name_assimilation,name_ci = name_ci,pressure=pressure, tleaf=tleaf,ignoreTPU=ignoreTPU)
+                   bound_h=bound_h,name_assimilation = name_assimilation,name_ci = name_ci,pressure=pressure, tleaf=tleaf,ignoreTPU=ignoreTPU,maxiter=maxiter)
   myTable <- reconstituteTable(data=data,fitParams=aciFit$par,tleaf=tleaf,name_assimilation=name_assimilation,name_ci=name_ci, pressure=pressure,
                                gammastar=gammastar,O2 = O2,ignoreTPU = ignoreTPU)
   myGraph <- reconstituteGraph(data=data, fitParams = aciFit$par,tleaf = tleaf,name_assimilation = name_assimilation,name_ci=name_ci,pressure=pressure,
