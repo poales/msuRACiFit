@@ -35,17 +35,14 @@ generateUi <- function(){
              shiny::fluidRow(
                 shiny::actionButton("stop", "Stop", class = "btn-danger", onclick = "setTimeout(function(){window.close();}, 100);"),
                 shiny::actionButton("genGuess","Generate guesses!"),
-                shiny::actionButton("fit","Fit curve!"),
-                shiny::actionButton("write","Write data!")
-                
+                shiny::actionButton("fit","Fit!"),
+                shiny::downloadButton("write","Write!")
+             ),
+             shiny::fluidRow(),
+             shiny::fluidRow( #top row: load/write data
+               shiny::fileInput('myFile','Load a data file:')
              ),
              
-             shiny::fluidRow( #top row: load/write data
-               shiny::fileInput('myFile','Pick a data file:')
-             ),
-             shiny::fluidRow(#pick location where to write
-               shiny::textInput("writeloc","Write data to:")
-             ),
              shiny::fluidRow( #second row: parameters, need 5 columns
                #label row...
                shiny::fluidRow(

@@ -20,15 +20,16 @@ generateServer <- function(myEnv=NULL){
     })
     sumres <- 0
     names <- c("vcmax","j","tpu","gm","rd","ag","as")
-    observeEvent(eventExpr=input$write,{
-      fn <- gsub(pattern = "(.*)\\..*",replacement="\\1",input$myFile$name)
-      #possibly rewrite the write location
-      write_loc <- gsub("\\\\", "/", input$writeloc)
-      filename <- paste(fn,"output.csv")
-      print(filename)
-      loc <- paste0(write_loc,"/",filename)
-      readr::write_csv(tibble::tibble("VcMax" = input$vcmax, "J"=input$j,"TPU" = input$tpu,"gm" = input$gm,"rL"=input$rd,"ag"=input$ag,"as"=input$as),file = loc)
-    })
+    #writing data
+    output$write <- downloadHandler(
+      filename=function(){
+        paste(gsub(pattern = "(.*)\\..*",replacement="\\1",input$myFile$name),"output.csv")
+      },
+      content= function(file){
+        readr::write_csv(tibble::tibble("VcMax" = input$vcmax, "J"=input$j,"TPU" = ifelse(input$ignoreTPU,NA,input$tpu),"gm" = input$gm,"rL"=input$rd,
+                                        "ag"=input$ag,"as"=input$as,"ssr" = sumres(),"points" = ifelse(!is.null(df()),nrow(mytable()),0)),file = file)
+      }
+    )
     observeEvent(eventExpr=input$genGuess,{
       if(!is.null(df())){
         locks2 <- c(NA,NA,NA,NA,NA,NA,NA)
@@ -132,20 +133,30 @@ generateServer <- function(myEnv=NULL){
       
       
     })
-    output$chosen <- renderTable({
-      #inFile <- input$myFile
+    mytable <- reactive({
       params <- c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as)
       if(is.null(df()))
         NULL
       else{
-        x <- reconstituteTable(df(),params,
-                        tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
-        sumres <- sum(x$`res^2`)
-        output$sumres <- renderText({
-          sumres
-        })
-        x
+        reconstituteTable(df(),params,
+              tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
+        
+        
       }
+    })
+    sumres <- reactive({
+      if(!is.null(mytable())){
+        sum(mytable()$`res^2`)
+      } else
+        NULL
+    })
+    output$sumres <- renderText({
+      sumres()
+    })
+    output$chosen <- renderTable({
+      #inFile <- input$myFile
+      mytable()
+      
 
     },server=FALSE,spacing="xs")
     
