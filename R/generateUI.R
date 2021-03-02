@@ -81,7 +81,7 @@ generateUi <- function(){
                                )
                 ),
                 shiny::column(width=3, #value
-                              shinyWidgets::autonumericInput("vcmax",label=NULL, value = 100,decimalPlacesRawValue=6,decimalPlaces = 3)
+                              shinyWidgets::autonumericInput("vcmax",label=NULL, value = 100,decimalPlacesRawValue=6,decimalPlaces = 3,modifyValueOnWheel = F)
                 ),
                 shiny::column(width=1, #lockbox
                               shiny::checkboxInput("vcmaxlock",label=NULL)
@@ -100,7 +100,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shinyWidgets::autonumericInput("j",label=NULL, value = 100,decimalPlacesRawValue=6,decimalPlaces = 3)
+                               shinyWidgets::autonumericInput("j",label=NULL, value = 100,decimalPlacesRawValue=6,decimalPlaces = 3,modifyValueOnWheel = F)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("jlock",label=NULL)
@@ -119,7 +119,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shinyWidgets::autonumericInput("tpu",label=NULL, value = 10,decimalPlacesRawValue=6,decimalPlaces = 3)
+                               shinyWidgets::autonumericInput("tpu",label=NULL, value = 10,decimalPlacesRawValue=6,decimalPlaces = 3,modifyValueOnWheel = F)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("tpulock",label=NULL)
@@ -138,7 +138,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shinyWidgets::autonumericInput("gm",label=NULL, value = 3,decimalPlacesRawValue=6,decimalPlaces = 3)
+                               shinyWidgets::autonumericInput("gm",label=NULL, value = 3,decimalPlacesRawValue=6,decimalPlaces = 3,modifyValueOnWheel = F)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("gmlock",label=NULL)
@@ -157,7 +157,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shinyWidgets::autonumericInput("rd",label=NULL, value = 2,decimalPlacesRawValue=6,decimalPlaces = 3)
+                               shinyWidgets::autonumericInput("rd",label=NULL, value = 2,decimalPlacesRawValue=6,decimalPlaces = 3,modifyValueOnWheel = F)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("rdlock",label=NULL)
@@ -176,7 +176,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shinyWidgets::autonumericInput("ag",label=NULL, value = 0,decimalPlacesRawValue=6,decimalPlaces = 3)
+                               shinyWidgets::autonumericInput("ag",label=NULL, value = 0,decimalPlacesRawValue=6,decimalPlaces = 3,modifyValueOnWheel = F)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("aglock",label=NULL)
@@ -195,7 +195,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shinyWidgets::autonumericInput("as",label=NULL, value = 0,decimalPlacesRawValue=6,decimalPlaces = 3)
+                               shinyWidgets::autonumericInput("as",label=NULL, value = 0,decimalPlacesRawValue=6,decimalPlaces = 3,modifyValueOnWheel = F)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("aslock",label=NULL)
