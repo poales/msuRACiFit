@@ -33,6 +33,9 @@ fitComplete <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammas
       j <- j+1
     }
   }
+  if(ignoreTPU){
+    my_params[3] <- NA
+  }
   myTable <- reconstituteTable(data=data,fitParams=my_params,tleaf=tleaf,name_assimilation=name_assimilation,name_ci=name_ci, pressure=pressure,
                                gammastar=gammastar,O2 = O2,ignoreTPU = ignoreTPU)
   myGraph <- reconstituteGraph(data=data, fitParams = my_params,tleaf = tleaf,name_assimilation = name_assimilation,name_ci=name_ci,pressure=pressure,
