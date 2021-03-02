@@ -27,7 +27,16 @@ generateServer <- function(myEnv=NULL){
       },
       content= function(file){
         readr::write_csv(tibble::tibble("VcMax" = input$vcmax, "J"=input$j,"TPU" = ifelse(input$ignoreTPU,NA,input$tpu),"gm" = input$gm,"rL"=input$rd,
-                                        "ag"=input$ag,"as"=input$as,"ssr" = sumres(),"points" = ifelse(!is.null(df()),nrow(mytable()),0)),file = file)
+                                        "ag"=input$ag,"as"=input$as,"ssr" = sumres(),"points" = ifelse(!is.null(df()),nrow(mytable()),0),"TLeaf" = input$tleaf,"O2" = input$oxygen,
+                                        "patm" = input$patm,"gammastar" = input$gammastar),file = file)
+      }
+    )
+    output$writetable <- downloadHandler(
+      filename=function(){
+        paste(gsub(pattern = "(.*)\\..*",replacement="\\1",input$myFile$name),"fitting table.csv")
+      },
+      content= function(file){
+        readr::write_csv(mytable(),file = file)
       }
     )
     observeEvent(eventExpr=input$genGuess,{
