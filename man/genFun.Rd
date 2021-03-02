@@ -25,6 +25,8 @@ genFun(
 
 \item{assimilationData}{The measured assimilation data}
 
+\item{tleaf}{Leaf temperature in celsius}
+
 \item{ignoreTPU}{Whether to fit TPU or not. Leave false if you don't know what you're doing!}
 }
 \description{

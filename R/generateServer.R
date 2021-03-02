@@ -5,7 +5,7 @@
 
 
 
-generateServer <- function(myEnv=NULL){
+generateServer <- function(){
   # Define server logic to summarize and view selected dataset ----
   server <- function(input, output, session) {
     df <- NULL
@@ -21,7 +21,7 @@ generateServer <- function(myEnv=NULL){
     sumres <- 0
     names <- c("vcmax","j","tpu","gm","rd","ag","as")
     #writing data
-    output$write <- downloadHandler(
+    output$write <- shiny::downloadHandler(
       filename=function(){
         paste(gsub(pattern = "(.*)\\..*",replacement="\\1",input$myFile$name),"output.csv")
       },
@@ -31,7 +31,7 @@ generateServer <- function(myEnv=NULL){
                                         "patm" = input$patm,"gammastar" = input$gammastar),file = file)
       }
     )
-    output$writetable <- downloadHandler(
+    output$writetable <- shiny::downloadHandler(
       filename=function(){
         paste(gsub(pattern = "(.*)\\..*",replacement="\\1",input$myFile$name),"fitting table.csv")
       },
@@ -39,7 +39,7 @@ generateServer <- function(myEnv=NULL){
         readr::write_csv(mytable(),file = file)
       }
     )
-    observeEvent(eventExpr=input$genGuess,{
+    shiny::observeEvent(eventExpr=input$genGuess,{
       if(!is.null(df())){
         locks2 <- c(NA,NA,NA,NA,NA,NA,NA)
         for(i in 1:length(locks)){
@@ -60,7 +60,7 @@ generateServer <- function(myEnv=NULL){
         }
       }
     })
-    observeEvent(eventExpr = input$fit,{
+    shiny::observeEvent(eventExpr = input$fit,{
       params <- as.numeric(c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as))
       # print("Params:")
       # print(params)
@@ -98,14 +98,14 @@ generateServer <- function(myEnv=NULL){
       }
         
     })
-    df <- reactive({
+    df <- shiny::reactive({
       if(is.null(input$myFile)){
         NULL
       }else{
         interpFile(input$myFile$datapath)
       }
     })
-    locks <- reactive({
+    locks <- shiny::reactive({
       c(input$vcmaxlock,input$jlock,input$tpulock,input$gmlock,input$rdlock,input$aglock,input$aslock)
     })
     # to renderPlot to indicate that:
@@ -142,7 +142,7 @@ generateServer <- function(myEnv=NULL){
       
       
     })
-    mytable <- reactive({
+    mytable <- shiny::reactive({
       params <- c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as)
       if(is.null(df()))
         NULL
@@ -153,16 +153,16 @@ generateServer <- function(myEnv=NULL){
         
       }
     })
-    sumres <- reactive({
+    sumres <- shiny::reactive({
       if(!is.null(mytable())){
         sum(mytable()$`res^2`)
       } else
         NULL
     })
-    output$sumres <- renderText({
+    output$sumres <- shiny::renderText({
       sumres()
     })
-    output$chosen <- renderTable({
+    output$chosen <- shiny::renderTable({
       #inFile <- input$myFile
       mytable()
       

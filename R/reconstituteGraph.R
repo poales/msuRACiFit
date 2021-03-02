@@ -16,7 +16,7 @@
 
 reconstituteGraph <- function(data,fitParams,name_assimilation="A", name_ci=c("pCi","Ci"),gammastar=3.52,O2=21,pressure=101,tleaf=25,ignoreTPU=F){
   locs <- match(tolower(name_ci),tolower(colnames(data)))
-  loc <- min(na.omit(locs))
+  loc <- min(stats::na.omit(locs))
   pCi <- data[,loc]
   if(!grepl(pattern="p",tolower(colnames(pCi)))){
     pCi <- pCi /1000000*1000*pressure

@@ -16,7 +16,8 @@ fitACi(
   forceValues = c(NA, NA, NA, NA, NA, NA, NA),
   bound_l = c(1, 1, 1, 0.001, 0.001, 0, 0),
   bound_h = c(1000, 1000, 1000, 30, 30, 1, 0.75),
-  ignoreTPU = F
+  ignoreTPU = F,
+  maxiter = 250
 )
 }
 \arguments{
@@ -36,13 +37,15 @@ fitACi(
 
 \item{initialGuess}{Initial guesses for fitting. Will generate ok guesses automatically if not provided}
 
-\item{forceValues}{A vector of forced values in order: VcMax, J, TPU, gm, Rd, aG, aS}
+\item{forceValues}{A vector of forced values in order: VcMax, J, TPU, gm, Rd, aG, aS. Include NAs where not forced, if you modify this!}
 
 \item{bound_l}{The minimum values to be considered for each parameter}
 
 \item{bound_h}{the maximum value to be considered for each parameter}
 
 \item{ignoreTPU}{Whether to fit TPU or not. Leave false if you don't know what you're doing!}
+
+\item{maxiter}{How many iterations to allow for the fitting algorithm. If you have a lot of points, large values for maxiter will take a long time!}
 }
 \description{
 Fit A/Ci curves using forced values, and bounds

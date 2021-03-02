@@ -13,6 +13,7 @@
 #' @param bound_l The minimum values to be considered for each parameter
 #' @param bound_h the maximum value to be considered for each parameter
 #' @param ignoreTPU Whether to fit TPU or not. Leave false if you don't know what you're doing!
+#' @param maxiter Maximum number of iterations for fitting. Can run very slowly if you have a large dataset and high maxiter. Default 250
 #' @name fitComplete
 #' @export
 

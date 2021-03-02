@@ -7,6 +7,7 @@
 #' @param O2 The oxygen concentration in parts per hundred.
 #' @param pCi The internal pressure of CO2
 #' @param assimilationData The measured assimilation data
+#' @param tleaf Leaf temperature in celsius
 #' @param ignoreTPU Whether to fit TPU or not. Leave false if you don't know what you're doing!
 #' @name genFun
 

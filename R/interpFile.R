@@ -1,7 +1,8 @@
 #'interpFile
 #'
 #' Attempts to read in the data file provided, if fails returns NULL so that the program won't break...
-#'@name interpFile
+#' @param l Location of the file to be interpreted
+#' @name interpFile
 
 interpFile <- function(l){
   #interpret the extension!

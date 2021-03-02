@@ -4,7 +4,7 @@
 \alias{generateServer}
 \title{generateServer}
 \usage{
-generateServer(myEnv = NULL)
+generateServer()
 }
 \description{
 Generates the server side of the shiny application.

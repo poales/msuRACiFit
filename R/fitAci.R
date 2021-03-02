@@ -21,7 +21,7 @@ fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3
                    forceValues = c(NA,NA,NA,NA,NA,NA,NA),bound_l=c(1,1,1,.001,.001,0,0),
                    bound_h=c(1000,1000,1000,30,30,1,.75),ignoreTPU=F,maxiter=250){
   locs <- match(tolower(name_ci),tolower(colnames(data)))
-  loc <- min(na.omit(locs))
+  loc <- min(stats::na.omit(locs))
   pCi <- data[,loc]
   
   if(!grepl(pattern="p",tolower(colnames(pCi)))){
