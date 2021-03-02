@@ -14,7 +14,8 @@ Imports:
 	tidyverse,
 	minpack.lm,
 	shiny,
-	plotly
+	plotly,
+	shinyWidgets
 Remotes:
 	poales/readLicorData
 RoxygenNote: 7.1.1

@@ -81,7 +81,7 @@ generateUi <- function(){
                                )
                 ),
                 shiny::column(width=3, #value
-                              shiny::numericInput("vcmax",label=NULL, value = 100)
+                              shinyWidgets::autonumericInput("vcmax",label=NULL, value = 100,decimalPlacesRawValue=6,decimalPlaces = 3)
                 ),
                 shiny::column(width=1, #lockbox
                               shiny::checkboxInput("vcmaxlock",label=NULL)
@@ -100,7 +100,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shiny::numericInput("j",label=NULL, value = 100)
+                               shinyWidgets::autonumericInput("j",label=NULL, value = 100,decimalPlacesRawValue=6,decimalPlaces = 3)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("jlock",label=NULL)
@@ -119,7 +119,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shiny::numericInput("tpu",label=NULL, value = 10)
+                               shinyWidgets::autonumericInput("tpu",label=NULL, value = 10,decimalPlacesRawValue=6,decimalPlaces = 3)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("tpulock",label=NULL)
@@ -138,7 +138,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shiny::numericInput("gm",label=NULL, value = 3)
+                               shinyWidgets::autonumericInput("gm",label=NULL, value = 3,decimalPlacesRawValue=6,decimalPlaces = 3)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("gmlock",label=NULL)
@@ -157,7 +157,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shiny::numericInput("rd",label=NULL, value = 2)
+                               shinyWidgets::autonumericInput("rd",label=NULL, value = 2,decimalPlacesRawValue=6,decimalPlaces = 3)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("rdlock",label=NULL)
@@ -176,7 +176,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shiny::numericInput("ag",label=NULL, value = 0)
+                               shinyWidgets::autonumericInput("ag",label=NULL, value = 0,decimalPlacesRawValue=6,decimalPlaces = 3)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("aglock",label=NULL)
@@ -195,7 +195,7 @@ generateUi <- function(){
                                )
                  ),
                  shiny::column(width=3, #value
-                               shiny::numericInput("as",label=NULL, value = 0)
+                               shinyWidgets::autonumericInput("as",label=NULL, value = 0,decimalPlacesRawValue=6,decimalPlaces = 3)
                  ),
                  shiny::column(width=1, #lockbox
                                shiny::checkboxInput("aslock",label=NULL)
@@ -220,9 +220,19 @@ generateUi <- function(){
       #mainPanel(
     ),
     shiny::fluidRow(
-      shiny::column(width=8,
-                    shiny::tableOutput("chosen")
+      shiny::column(width=7,
+                    shiny::fluidRow(
+                      shiny::titlePanel("Data Table"
+                        #shiny::p("Data Table")
+                      ),
+                      shiny::downloadButton("writetable","Save table")
+                      
+                    ),
+                    shiny::fluidRow(
+                      shiny::tableOutput("chosen")
+                    )
       ),
+      shiny::column(width=1),
       shiny::column(width=4,
             shiny::fluidRow(
               shiny::mainPanel(width=3,

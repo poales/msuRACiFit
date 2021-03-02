@@ -46,7 +46,7 @@ generateServer <- function(myEnv=NULL){
         j <- 1 #track location in fitdat$par
         for(i in 1:7){
           if(!locks()[i]){
-            shiny::updateNumericInput(session,names[i],value = guessed[i])
+            shinyWidgets::updateAutonumericInput(session,names[i],value = guessed[i])
           }
         }
       }
@@ -80,7 +80,7 @@ generateServer <- function(myEnv=NULL){
         j <- 1 #track location in fitdat$par
         for(i in 1:7){
           if(!locks()[i]){
-            shiny::updateNumericInput(session,names[i],value = fitdat$par[j])
+            shinyWidgets::updateAutonumericInput(session,names[i],value = fitdat$par[j])
             j <- j+1
           }
         }
