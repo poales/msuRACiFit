@@ -16,6 +16,6 @@ and is designed to mimic the feel of existing excel fitting tools while being mo
 #### Terminal
 The main fitting function is fitACi. This accepts a tibble which contains the relevant columns for assimilation and Ci. The program by default looks for assimilation in the "A" column and Ci in either "pCi" or "Ci" columns, but these can be changed with arguments <code>name_assimilation</code> and <code>name_ci</code>. Fitting is done using minpack.lm, and can be controlled in various ways. Upper and lower bounds can be set with <code>bound_h</code> and <code>bound_l</code>, and values can be forced with <code>forceValues</code>. By default, the program will generate guesses for the initial values of the parameters, to guide the fitting program into the correct local minimum, and reduce misfitting.
 
-After fitting is done, the parameters can be passed on to reconstituteGraph and reconstituteTable to visualize and see greater detail on the quality of the fit, including which data points are fit to which limitation on photosynthesis.
+After fitting is done, the parameters can be passed on to <code>reconstituteGraph</code> and <code>reconstituteTable</code> to visualize and see greater detail on the quality of the fit, including which data points are fit to which limitation on photosynthesis.
 
 If you wish to see everything all at once, the function <code>fitComplete</code> will automatically generate the table and the graph for the fit.
