@@ -46,7 +46,7 @@ fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3
   bound_h <- bound_h[is.na(forceValues)]
   #print(maxiter)
   #print(initialGuess)
-  myfit <- minpack.lm::nls.lm(par=initialGuess,lower=bound_l,upper = bound_h,fn = myFun,control = minpack.lm::nls.lm.control(maxiter=maxiter,maxfev = 1250))
+  myfit <- minpack.lm::nls.lm(par=initialGuess,lower=bound_l,upper = bound_h,fn = myFun,control = minpack.lm::nls.lm.control(maxiter=maxiter,maxfev = 1250,ptol=0))
   print(myfit)
   my_params <- c(0,0,0,0,0,0,0)
   j <- 1
