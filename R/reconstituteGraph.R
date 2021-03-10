@@ -36,7 +36,7 @@ reconstituteGraph <- function(data,fitParams,name_assimilation="A", name_ci=c("p
   jdat <- tibble::tibble(A=AjFunc(Ccs,ag,as,rd,vcmax,j,tpu,gm,gammastar),Cc=Ccs)
   pdat <- tibble::tibble(A=ApFunc(Ccs,ag,as,rd,vcmax,j,tpu,gm,gammastar),Cc=Ccs)
   #remap data rq
-  data2 <- tibble::tibble(A = data$A,"Cc"=unlist(pCi) - unlist(data$A)/gm)
+  data2 <- tibble::tibble(A = unlist(AData),"Cc"=unlist(pCi) - unlist(data$A)/gm)
   if(ignoreTPU){
     myPlot <- ggplot2::ggplot()+
       ggplot2::geom_point(data2,mapping=ggplot2::aes(x=Cc,y=A),size=3)+

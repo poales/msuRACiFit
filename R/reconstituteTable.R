@@ -33,7 +33,7 @@ reconstituteTable <- function(data,fitParams,name_assimilation="A", name_ci=c("p
   rd <- fitParams[5]
   ag <- fitParams[6]
   as <- fitParams[7]
-  data2 <- tibble::tibble(A = data$A, "pCi" = pCi,"Cc"=unlist(pCi) - unlist(data$A)/gm)
+  data2 <- tibble::tibble(A = unlist(AData), "pCi" = pCi,"Cc"=unlist(pCi) - unlist(AData)/gm)
   cdat <- tibble::tibble(A=AcFunc(data2$Cc,ag,as,rd,vcmax,j,tpu,gm,Kc,Ko,O2,gammastar),Cc = data2$Cc)
   jdat <- tibble::tibble(A=AjFunc(data2$Cc,ag,as,rd,vcmax,j,tpu,gm,gammastar),Cc=data2$Cc)
   pdat <- tibble::tibble(A=ApFunc(data2$Cc,ag,as,rd,vcmax,j,tpu,gm,gammastar),Cc=data2$Cc)
