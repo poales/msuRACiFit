@@ -42,6 +42,17 @@ generateUi <- function(){
              shiny::fluidRow( #top row: load/write data
                shiny::fileInput('myFile','Load a data file:')
              ),
+             shiny::fluidRow(
+               shiny::column(
+                 shiny::uiOutput("xax"),
+                 width=5
+               ),
+               shiny::column(
+                 shiny::uiOutput("yax"),
+                 width=5
+               )
+               
+             ),
              
              shiny::fluidRow( #second row: parameters, need 5 columns
                #label row...
@@ -147,7 +158,7 @@ generateUi <- function(){
                                shiny::numericInput("gmlbound",label=NULL, value = .001)
                  ),
                  shiny::column(width=3,#ubound
-                               shiny::numericInput("gmubound",label=NULL,value=20)
+                               shiny::numericInput("gmubound",label=NULL,value=30)
                  )
                ),
                shiny::fluidRow(
