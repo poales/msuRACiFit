@@ -9,5 +9,11 @@
 genApp <- function(){
   ui <- generateUi()
   serv <- generateServer()
-  shiny::runApp(shiny::shinyApp(ui,serv))
+  if(interactive()){
+    shiny::runApp(shiny::shinyApp(ui,serv),launch.browser = F)
+  } else{
+    shiny::runApp(shiny::shinyApp(ui,serv),launch.browser = T)
+  }
+  
+  
 }

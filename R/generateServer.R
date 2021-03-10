@@ -48,7 +48,7 @@ generateServer <- function(){
           }
         }
         
-        AData <- df()["A"]
+        AData <- df()[input$yax]
         guessed <- genGuess(AData)
         
         i <- 1 #track location on page
@@ -82,7 +82,7 @@ generateServer <- function(){
 
 
         fitdat <- fitACi(data=tibble::tibble(df()),input$gammastar,O2 = input$oxygen,initialGuess = params,forceValues = locks2,bound_l = lbounds,
-                         bound_h = ubounds,name_assimilation = "A",name_ci = c("Pci","ci"),pressure=input$patm,tleaf=input$tleaf,ignoreTPU=input$ignoreTPU,
+                         bound_h = ubounds,name_assimilation = input$yax,name_ci = input$xax,pressure=input$patm,tleaf=input$tleaf,ignoreTPU=input$ignoreTPU,
                          maxiter=input$maxiter)[[2]]
 
         i <- 1 #track location on page
@@ -97,6 +97,40 @@ generateServer <- function(){
         
       }
         
+    })
+    output$xax <- renderUI({
+      cn <- colnames(df())
+      if(!is.null(df())){
+        nm <- cn[dplyr::first(grep("ci",ignore.case = T,x = cn))]
+        print(nm)
+        shiny::selectInput(inputId = "xax",
+                           label = "Ci Variable:",
+                           choices = cn,selected = nm)
+      } else{
+        shiny::selectInput(inputId = "xax",
+                           label = "Ci Variable:",
+                           choices = cn)
+      }
+
+    })
+    output$yax <- renderUI({
+      cn <- colnames(df())
+      if(!is.null(df())){
+        if("A" %in% cn){
+          nm2 <- "A"
+        } else{
+          nm2 <- cn[dplyr::first(grep("Pho",ignore.case = T,x = cn))]
+        }
+        print(nm2)
+        shiny::selectInput(inputId = "yax",
+                           label = "Assimilation Var:",
+                           choices = cn,selected = nm2)
+      } else{
+        shiny::selectInput(inputId = "yax",
+                           label = "Assimilation Var:",
+                           choices = cn)
+      }
+      
     })
     df <- shiny::reactive({
       if(is.null(input$myFile)){
@@ -122,7 +156,7 @@ generateServer <- function(){
       }else{
         
         a <- reconstituteGraph(df(),params,
-                               tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
+                               tleaf=input$tleaf,name_assimilation=input$yax, name_ci=input$xax,pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
         
       }
       plotly::config(plotly::layout(plotly::ggplotly(a,source="A"),
@@ -139,8 +173,6 @@ generateServer <- function(){
       ),mathjax="cdn")
         
       
-      
-      
     })
     mytable <- shiny::reactive({
       params <- c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as)
@@ -148,7 +180,7 @@ generateServer <- function(){
         NULL
       else{
         reconstituteTable(df(),params,
-              tleaf=input$tleaf,name_assimilation="A", name_ci=c("pCi","Ci"),pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
+              tleaf=input$tleaf,name_assimilation=input$yax, name_ci=input$xax,pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
         
         
       }
