@@ -115,6 +115,7 @@ generateServer <- function(){
     })
     output$yax <- renderUI({
       cn <- colnames(df())
+      nm2 <- NULL
       if(!is.null(df())){
         if("A" %in% cn){
           nm2 <- "A"
@@ -122,15 +123,11 @@ generateServer <- function(){
           nm2 <- cn[dplyr::first(grep("Pho",ignore.case = T,x = cn))]
         }
         print(nm2)
-        shiny::selectInput(inputId = "yax",
-                           label = "Assimilation Var:",
-                           choices = cn,selected = nm2)
-      } else{
-        shiny::selectInput(inputId = "yax",
-                           label = "Assimilation Var:",
-                           choices = cn)
+        
       }
-      
+      shiny::selectInput(inputId = "yax",
+                         label = "Assimilation Var:",
+                         choices = cn,selected = nm2)
     })
     df <- shiny::reactive({
       if(is.null(input$myFile)){
@@ -154,7 +151,8 @@ generateServer <- function(){
         a <- ggplot2::ggplot(df(),mapping=ggplot2::aes(x="Cc",y="A"))+
           ggplot2::theme_classic()
       }else{
-        
+        print(input$yax)
+        print(input$xax)
         a <- reconstituteGraph(df(),params,
                                tleaf=input$tleaf,name_assimilation=input$yax, name_ci=input$xax,pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
         
