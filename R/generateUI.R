@@ -222,33 +222,66 @@ generateUi <- function(){
              ) #end of parameters block
       ),
 
-      shiny::column(width=6, plotly::plotlyOutput("distPlot",height = "500px")
-             #DT::dataTableOutput('x11')
+      shiny::column(width=6, plotly::plotlyOutput("distPlot",height = "500px"))
 
-      )
-      #),
-      # Main panel for displaying outputs ----
-      #mainPanel(
     ),
     shiny::fluidRow(
-      shiny::column(width=7,
+      shiny::column(width=9,
                     shiny::fluidRow(
                       shiny::titlePanel("Data Table"
                         #shiny::p("Data Table")
                       ),
-                      shiny::downloadButton("writetable","Save table")
+                      shiny::column(
+                        shiny::downloadButton("writetable","Save table"),
+                        width=5
+                      ),
+                      shiny::column(
+                        shiny::actionButton("disableToggle",label="Disable selected"),
+                        width=3
+                      ),
+                      shiny::column(
+                        shiny::checkboxInput("cutEnable",label="Cut data",value = FALSE),
+                        width=2
+                      ),
+                      
+                      
+                      
                       
                     ),
                     shiny::fluidRow(
-                      shiny::tableOutput("chosen")
+                      shiny::conditionalPanel(
+                        condition= "input.cutEnable",
+                        shiny::fluidRow(
+                          shiny::column(
+                            shiny::uiOutput("cutColChoices"),
+                            width=4
+                          ),
+                          shiny::column(
+                            shiny::numericInput("cutLength",label="Cut threshold",value=200),
+                            width=2
+                          ),
+                          shiny::column(
+                            shiny::uiOutput("cutopts"),
+                            width=4
+                          )
+                          
+                        )
+                      )
+                    ),
+                    shiny::fluidRow(
+                      #shiny::tableOutput("chosen")
+                      DT::dataTableOutput("chosen")
                     )
       ),
       shiny::column(width=1),
-      shiny::column(width=4,
+      shiny::column(width=2,
             shiny::fluidRow(
-              shiny::mainPanel(width=3,
-                               shiny::p("Sum of Squares Residual: ")
-              ),
+              
+                               shiny::p("Sum of Squares: ")
+              
+              
+            ),
+            shiny::fluidRow(
               shiny::verbatimTextOutput(outputId = "sumres")
             ),
             shiny::fluidRow(

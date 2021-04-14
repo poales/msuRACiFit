@@ -20,6 +20,9 @@
 fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3.52,O2=21,pressure = 101,tleaf=25,initialGuess=NA,
                    forceValues = c(NA,NA,NA,NA,NA,NA,NA),bound_l=c(1,1,1,.001,.001,0,0),
                    bound_h=c(1000,1000,1000,30,30,1,.75),ignoreTPU=F,maxiter=250){
+  if(!tibble::is_tibble(data)){
+    data <- tibble::tibble(data)
+  }
   locs <- match(tolower(name_ci),tolower(colnames(data)))
   loc <- min(stats::na.omit(locs))
   pCi <- data[,loc]
@@ -46,7 +49,7 @@ fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3
   bound_h <- bound_h[is.na(forceValues)]
   #print(maxiter)
   #print(initialGuess)
-  myfit <- minpack.lm::nls.lm(par=initialGuess,lower=bound_l,upper = bound_h,fn = myFun,control = minpack.lm::nls.lm.control(maxiter=maxiter,maxfev = 1250,ptol=0))
+  myfit <- minpack.lm::nls.lm(par=initialGuess,lower=bound_l,upper = bound_h,fn = myFun,control = minpack.lm::nls.lm.control(maxiter=maxiter,maxfev = 1250,ptol=0,ftol=0))
   print(myfit)
   my_params <- c(0,0,0,0,0,0,0)
   j <- 1

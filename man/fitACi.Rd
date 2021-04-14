@@ -2,7 +2,7 @@
 % Please edit documentation in R/fitAci.R
 \name{fitACi}
 \alias{fitACi}
-\title{fitAci}
+\title{fitACi}
 \usage{
 fitACi(
   data,
