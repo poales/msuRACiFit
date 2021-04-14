@@ -20,6 +20,7 @@ Imports:
 	rlang,
 	minpack.lm,
 	shiny,
+	DT,
 	plotly,
 	shinyWidgets,
 	readLicorData
