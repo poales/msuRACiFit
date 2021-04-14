@@ -149,7 +149,8 @@ generateServer <- function(){
         if("A" %in% cn){
           nm2 <- "A"
         } else{
-          nm2 <- cn[dplyr::first(grep("Pho",ignore.case = T,x = cn))]
+          #nm2 <- cn[dplyr::first(grep("Pho",ignore.case = T,x = cn))]
+          nm2 <- cn[1]
         }
         print(nm2)
         
