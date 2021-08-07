@@ -15,9 +15,24 @@
 #'@param gammastar Cc compensation point
 #'@name AFunc
 
+# AFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar){
+#   ac = AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar)
+#   aj = AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar)
+#   ap = ApFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar)
+# 
+#   pmin(ac,aj,ap)
+# }
+
 AFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar){
   ac = AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar)
   aj = AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar)
   ap = ApFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar)
-  pmin(ac,aj,ap)
+  tot <- tibble::tibble(ac,aj,ap,.name_repair = "minimal")
+  l <- apply(tot,1,function(x)which.min(abs(x+Rd)))
+  res <- 1:length(l)
+  for(i in 1:length(l)){
+    res[i] <- tot[[i,l[[i]]]]
+  }
+  return(res)
 }
+

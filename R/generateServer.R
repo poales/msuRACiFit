@@ -90,7 +90,7 @@ generateServer <- function(){
         }
       }
       if(!is.null(df())){
-        print("Fitting!")
+        #print("Fitting!")
         df_disableApplied <- df()[enabled(),]
 
         fitdat <- fitACi(data=tibble::tibble(df_disableApplied),input$gammastar,O2 = input$oxygen,initialGuess = params,forceValues = locks2,bound_l = lbounds,
@@ -115,12 +115,12 @@ generateServer <- function(){
       if(!is.null(df())){
         #find the items with ci in them
         ci_find <- grep("ci",ignore.case = T,x = cn)
-        print("finding CI!")
-        print(ci_find)
+        #print("finding CI!")
+        #print(ci_find)
         
         if(length(ci_find)==0){ #nothing found...
-          print("nothing found")
-          print(length(ci_find))
+          #print("nothing found")
+          #print(length(ci_find))
           nm <- cn[1]
         }else{ #use pci if you can find it
           pci_find <- grep(pattern="p",x=cn[ci_find],ignore.case = T)
@@ -131,7 +131,7 @@ generateServer <- function(){
           }
         }
         
-        print(nm)
+        #print(nm)
         shiny::selectInput(inputId = "xax",
                            label = "Ci Variable:",
                            choices = cn,selected = nm)
@@ -152,7 +152,7 @@ generateServer <- function(){
           #nm2 <- cn[dplyr::first(grep("Pho",ignore.case = T,x = cn))]
           nm2 <- cn[1]
         }
-        print(nm2)
+        #print(nm2)
         
       }
       shiny::selectInput(inputId = "yax",
@@ -168,7 +168,7 @@ generateServer <- function(){
         } else{
           nm2 <- cn[1]
         }
-        print(nm2)
+        #print(nm2)
         
       }
       shiny::selectInput(inputId = "cutColChosen",
@@ -195,14 +195,14 @@ generateServer <- function(){
       #if nothing else, give it firstIn
       #if something else, modify firstIn
       if(input$cutEnable){
-        print("remaking df")
+        #print("remaking df")
         x2 <- ss_runsetter(firstIn(),aslist=T,threshold=input$cutLength,column=input$cutColChosen)
         cutChoices(1:length(x2))
         enabled(rep(TRUE,nrow(x2[[as.numeric(input$chosenCut)]])))
         x2[[as.numeric(input$chosenCut)]]
       }else{
         if(!is.null(firstIn())){
-          print("remaking df")
+          #print("remaking df")
           enabled(rep(TRUE,nrow(firstIn())))
         }
         
@@ -225,7 +225,7 @@ generateServer <- function(){
         a <- ggplot2::ggplot(df(),mapping=ggplot2::aes(x="Cc",y="A"))+
           ggplot2::theme_classic()
       }else{
-        print("Making graph!")
+        #print("Making graph!")
         df_disableApplied <- df()[enabled(),]
         a <- reconstituteGraph(df_disableApplied,params,
                                tleaf=input$tleaf,name_assimilation=input$yax, name_ci=input$xax,pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
@@ -252,7 +252,7 @@ generateServer <- function(){
       if(is.null(df()))
         NULL
       else{
-        print("Making table!")
+        #print("Making table!")
         reconstituteTable(df(),params,
               tleaf=input$tleaf,name_assimilation=input$yax, name_ci=input$xax,pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
         

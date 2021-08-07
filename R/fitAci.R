@@ -50,7 +50,7 @@ fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3
   #print(maxiter)
   #print(initialGuess)
   myfit <- minpack.lm::nls.lm(par=initialGuess,lower=bound_l,upper = bound_h,fn = myFun,control = minpack.lm::nls.lm.control(maxiter=maxiter,maxfev = 1250,ptol=0,ftol=0))
-  print(myfit)
+  #print(myfit)
   my_params <- c(0,0,0,0,0,0,0)
   j <- 1
   for(i in 1:7){
@@ -64,6 +64,6 @@ fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3
   if(ignoreTPU){
     my_params[3] <- NA
   }
-  return(list(my_params,myfit))
+  return(list(nameParams(my_params),myfit))
 }
 

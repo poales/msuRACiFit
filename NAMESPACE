@@ -3,5 +3,6 @@
 export(fitACi)
 export(fitComplete)
 export(genApp)
+export(interpFile)
 export(reconstituteGraph)
 export(reconstituteTable)

@@ -15,6 +15,9 @@
 
 
 reconstituteTable <- function(data,fitParams,name_assimilation="A", name_ci=c("pCi","Ci"),gammastar=3.52,O2=21,pressure=101,tleaf=25,ignoreTPU=F){
+  if(!tibble::is_tibble(data)){
+    data <- tibble::tibble(data)
+  }
   locs <- match(tolower(name_ci),tolower(colnames(data)))
   loc <- min(stats::na.omit(locs))
   pCi <- data[,loc]
@@ -26,17 +29,29 @@ reconstituteTable <- function(data,fitParams,name_assimilation="A", name_ci=c("p
   AData <- data[name_assimilation]
   Kc <- exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf))))
   Ko <- exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))
-  vcmax <- fitParams[1]
-  j <- fitParams[2]
-  tpu <- fitParams[3]
-  gm <- fitParams[4]
-  rd <- fitParams[5]
-  ag <- fitParams[6]
-  as <- fitParams[7]
-  data2 <- tibble::tibble(A = unlist(AData), "pCi" = pCi,"Cc"=unlist(pCi) - unlist(AData)/gm)
-  cdat <- tibble::tibble(A=AcFunc(data2$Cc,ag,as,rd,vcmax,j,tpu,gm,Kc,Ko,O2,gammastar),Cc = data2$Cc)
-  jdat <- tibble::tibble(A=AjFunc(data2$Cc,ag,as,rd,vcmax,j,tpu,gm,gammastar),Cc=data2$Cc)
-  pdat <- tibble::tibble(A=ApFunc(data2$Cc,ag,as,rd,vcmax,j,tpu,gm,gammastar),Cc=data2$Cc)
+  # vcmax <- fitParams[1]
+  # j <- fitParams[2]
+  # tpu <- fitParams[3]
+  # gm <- fitParams[4]
+  # rd <- fitParams[5]
+  # ag <- fitParams[6]
+  # as <- fitParams[7]
+  data2 <- with(fitParams,{
+    tibble::tibble(A = unlist(AData), "pCi" = pCi,"Cc"=unlist(pCi) - unlist(AData)/gm)
+  })
+  cdat <- with(fitParams,{
+    tibble::tibble(A=AcFunc(data2$Cc,ag,as,rL,VcMax,J,TPU,gm,Kc,Ko,O2,gammastar),Cc = data2$Cc)
+  })
+  jdat <- with(fitParams,{
+    tibble::tibble(A=AjFunc(data2$Cc,ag,as,rL,VcMax,J,TPU,gm,gammastar),Cc=data2$Cc)
+  })
+  pdat <- with(fitParams,{
+    tibble::tibble(A=ApFunc(data2$Cc,ag,as,rL,VcMax,J,TPU,gm,gammastar),Cc=data2$Cc)
+  })
+  # data2 <- tibble::tibble(A = unlist(AData), "pCi" = pCi,"Cc"=unlist(pCi) - unlist(AData)/gm)
+  # cdat <- tibble::tibble(A=AcFunc(data2$Cc,ag,as,rd,vcmax,j,tpu,gm,Kc,Ko,O2,gammastar),Cc = data2$Cc)
+  # jdat <- tibble::tibble(A=AjFunc(data2$Cc,ag,as,rd,vcmax,j,tpu,gm,gammastar),Cc=data2$Cc)
+  # pdat <- tibble::tibble(A=ApFunc(data2$Cc,ag,as,rd,vcmax,j,tpu,gm,gammastar),Cc=data2$Cc)
   #remap data rq
   #now I have to pick limitations and create a column with that data
   if(ignoreTPU){
