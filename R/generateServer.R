@@ -227,7 +227,7 @@ generateServer <- function(){
       }else{
         #print("Making graph!")
         df_disableApplied <- df()[enabled(),]
-        a <- reconstituteGraph(df_disableApplied,params,
+        a <- reconstituteGraph(df_disableApplied, nameParams(params),
                                tleaf=input$tleaf,name_assimilation=input$yax, name_ci=input$xax,pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
         
       }
@@ -253,7 +253,7 @@ generateServer <- function(){
         NULL
       else{
         #print("Making table!")
-        reconstituteTable(df(),params,
+        reconstituteTable(df(),nameParams(params),
               tleaf=input$tleaf,name_assimilation=input$yax, name_ci=input$xax,pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
         
         
