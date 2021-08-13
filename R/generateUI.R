@@ -290,7 +290,19 @@ generateUi <- function(){
             shiny::fluidRow(
               shiny::numericInput("tleaf",label="Leaf Temp",value=25),
               shiny::numericInput("patm",label="Pressure (kPa)",value=101),
-              shiny::numericInput("gammastar",label="Gamma* (kPa)",value=3.52),
+              shinyWidgets::autonumericInput("gammastar",label="Gamma*", value = 3.74,decimalPlacesRawValue=6,decimalPlaces = 3,modifyValueOnWheel = F),
+              shiny::checkboxInput("gammastarCalc",label="Calculate Gamma*",value = T),
+              shiny::conditionalPanel(
+                condition= "input.gammastarCalc",
+                shiny::fluidRow(
+                  shiny::p("Rubisco kinetics parameters:")
+                ),
+                shiny::fluidRow(
+                  shiny::uiOutput("presetOpts"),
+                  shinyWidgets::autonumericInput("c",label="c", value = 11.187,decimalPlacesRawValue=6,decimalPlaces = 3,modifyValueOnWheel = F),
+                  shinyWidgets::autonumericInput("dHa",label="dHa", value = 24.46,decimalPlacesRawValue=6,decimalPlaces = 3,modifyValueOnWheel = F)
+                )
+              ),
               shiny::numericInput("oxygen",label="Oxygen%",value=21),
               shiny::checkboxInput("ignoreTPU",label="Ignore TPU",value = F),
               shiny::numericInput("maxiter",label="Maximum Fitting Iterations",value=250)

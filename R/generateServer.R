@@ -17,6 +17,7 @@ generateServer <- function(){
     cutting <- 1
     cutChoices <- shiny::reactiveVal(1)
     enabled <- shiny::reactiveVal(TRUE)
+    presets <- gsPresets
     
     output$sumres <- shiny::renderText({
       sumres
@@ -180,6 +181,36 @@ generateServer <- function(){
                          label="Which curve?",
                          choices = cutChoices(),
                          selected = 1)
+    })
+    
+    gs <- shiny::reactive({
+      gs1 <- calcGammaStar(input$c,input$dHa,input$tleaf,input$oxygen)
+      if(!is.null(input$chosenPreset) & input$gammastarCalc){
+        if(input$chosenPreset != "N. tabacum")
+          gs1 <- gs1 * 1000 / 1000000 * input$patm
+      }
+      gs1
+    })
+    gd <- shiny::observe({
+      if(input$gammastarCalc){
+        shinyWidgets::updateAutonumericInput(session,"gammastar",value = gs())
+      }
+    })
+    output$presetOpts <- shiny::renderUI({
+      shiny::selectInput(inputId="chosenPreset",
+                         label="Preset plant",
+                         choices = unname(unlist(presets[,1])),
+                         selected = "N. tabacum")
+    })
+    gx <- shiny::observe({
+      print(input$chosenPreset)
+      if(!is.null(input$chosenPreset)){
+        presetRow <- presets[presets$plant==input$chosenPreset,]
+        shinyWidgets::updateAutonumericInput(session,"c",value = unname(unlist(presetRow$c)))
+        shinyWidgets::updateAutonumericInput(session,"dHa",value = unname(unlist(presetRow$dHa)))
+      }
+      
+      
     })
     firstIn <- shiny::reactive({
       #this stores the full data loaded in. we will manipulate the data later. 
