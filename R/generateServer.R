@@ -17,7 +17,7 @@ generateServer <- function(){
     cutting <- 1
     cutChoices <- shiny::reactiveVal(1)
     enabled <- shiny::reactiveVal(TRUE)
-    presets <- gsPresets
+    presets <- msuRACiFit::gsPresets
     
     output$sumres <- shiny::renderText({
       sumres
