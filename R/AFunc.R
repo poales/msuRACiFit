@@ -15,13 +15,6 @@
 #'@param gammastar Cc compensation point
 #'@name AFunc
 
-# AFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar){
-#   ac = AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar)
-#   aj = AjFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar)
-#   ap = ApFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,gammastar)
-# 
-#   pmin(ac,aj,ap)
-# }
 
 AFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar){
   ac = AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar)
