@@ -13,93 +13,38 @@
 
 
 
-genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pCi,assimilationData,tleaf=25,ignoreTPU=F){
-  if(!is.na(forceValues[1])){
-    Vcmax <- forceValues[1]
-    vc.is.forced <- T
-  }else{
-    vc.is.forced <- F
-  }
-  if(!is.na(forceValues[2])){
-    j <- forceValues[2]
-    j.is.forced <- T
-  }else{
-    j.is.forced <- F
-  }
-  if(!is.na(forceValues[3])){
-    TPU <- forceValues[3]
-    tpu.is.forced <- T
-  }else{
-    tpu.is.forced <- F
-  }
-  if(!is.na(forceValues[4])){
-    gm <- forceValues[4]
-    gm.is.forced <- T
-  }else{
-    gm.is.forced <- F
-  }
-  if(!is.na(forceValues[5])){
-    Rd <- forceValues[5]
-    rd.is.forced <- T
-  }else{
-    rd.is.forced <- F
-  }
-  if(!is.na(forceValues[6])){
-    aG <- forceValues[6]
-    ag.is.forced <- T
-  }else{
-    ag.is.forced <- F
-  }
-  if(!is.na(forceValues[7])){
-    aS <- forceValues[7]
-    as.is.forced <- T
-  }else{
-    as.is.forced <- F
-  }
+genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pCi,assimilationData,tleaf=25,ignoreTPU=F,
+                   Kc=exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf)))),
+                   Ko=exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))){
+  names <- c("VcMax","J","TPU","gm","rL","aG","aS")
+  names(forceValues) <- names
+  forceValues <- forceValues[!is.na(forceValues)]
+  param_names <- names[!names %in% names(forceValues)]
+  forceValues <- split(forceValues,names(forceValues))
   gammastar <- gammastar
   O <- O2
   y <- assimilationData
   Kc <- exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf))))
   Ko <- exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))
-  fn <- function(params) {
-    
-    i <- 1
-    if(!vc.is.forced){
-      Vcmax <- params[i]
-      i <- i+1
+  if(ignoreTPU){
+    fn <- function(params) {
+      params <- as.list(params)
+      names(params) <- param_names
+      vals <- c(params,forceValues)
+      Cc <- pCi - y/vals$gm
+      y.out <- AFuncMinusTPU(Cc, vals$aG, vals$aS, vals$rL, vals$VcMax, vals$J, vals$TPU, vals$gm,Kc,Ko,O2,gammastar)
+      return(unlist(y-y.out))
     }
-    if(!j.is.forced){
-      j <- params[i]
-      i <- i+1
+  } else{
+    fn <- function(params) {
+      params <- as.list(params)
+      names(params) <- param_names
+      vals <- c(params,forceValues)
+      Cc <- pCi - y/vals$gm
+      y.out <- AFunc(Cc, vals$aG, vals$aS, vals$rL, vals$VcMax, vals$J, vals$TPU, vals$gm,Kc,Ko,O2,gammastar)
+      return(unlist(y-y.out))
     }
-    if(!tpu.is.forced){
-      TPU <- params[i]
-      i <- i+1
-    }
-    if(!gm.is.forced){
-      gm <- params[i]
-      i <- i+1
-    }
-    if(!rd.is.forced){
-      Rd <- params[i]
-      i <- i+1
-    }
-    if(!ag.is.forced){
-      aG <- params[i]
-      i <- i+1
-    }
-    if(!as.is.forced){
-      aS <- params[i]
-      i <- i+1
-    }
-    
-    Cc <- pCi - y/gm
-    if(ignoreTPU){
-      y.out <- AFuncMinusTPU(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar) 
-    }else{
-      y.out <- AFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar)   
-    } 
-    return(unlist(y-y.out))
   }
+  
   return(fn)
 }
