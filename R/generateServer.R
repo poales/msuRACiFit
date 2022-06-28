@@ -73,17 +73,12 @@ generateServer <- function(){
       }
     })
     shiny::observeEvent(eventExpr = input$fit,{
+      #read in data from numeric entry boxes
       params <- as.numeric(c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as))
-      # print("Params:")
-      # print(params)
-      # print(typeof(params))
       lbounds <- as.numeric(c(input$vcmaxlbound,input$jlbound,input$tpulbound,input$gmlbound,input$rdlbound,input$aglbound,input$aslbound))
-      # print("lbounds:")
-      # print(lbounds)
-      # print(typeof(lbounds))
       ubounds <- as.numeric(c(input$vcmaxubound,input$jubound,input$tpuubound,input$gmubound,input$rdubound,input$agubound,input$asubound))
 
-      #locks <- c(input$vcmaxlock,input$jlock,input$tpulock,input$gmlock,input$rdlock,input$aglock,input$aslock)
+      #look for locked data and pass that as fixedValues
       locks2 <- c(NA,NA,NA,NA,NA,NA,NA)
       for(i in 1:length(locks())){
         if(locks()[i]){
@@ -111,17 +106,14 @@ generateServer <- function(){
       }
         
     })
+    #create the drop down box for selecting the x axis variable, and initialize it
     output$xax <- shiny::renderUI({
       cn <- colnames(df())
       if(!is.null(df())){
         #find the items with ci in them
         ci_find <- grep("ci",ignore.case = T,x = cn)
-        #print("finding CI!")
-        #print(ci_find)
         
         if(length(ci_find)==0){ #nothing found...
-          #print("nothing found")
-          #print(length(ci_find))
           nm <- cn[1]
         }else{ #use pci if you can find it
           pci_find <- grep(pattern="p",x=cn[ci_find],ignore.case = T)
@@ -132,17 +124,20 @@ generateServer <- function(){
           }
         }
         
-        #print(nm)
+        #initialize the xaxis variable, preferably to pci
         shiny::selectInput(inputId = "xax",
                            label = "Ci Variable:",
                            choices = cn,selected = nm)
       } else{
+        #initialize the xaxis variable to the first variable and make them look for it
         shiny::selectInput(inputId = "xax",
                            label = "Ci Variable:",
                            choices = cn)
       }
 
     })
+    
+    #create the drop down menu for the y axis variable and initialize it, preferably to "A"
     output$yax <- shiny::renderUI({
       cn <- colnames(df())
       nm2 <- NULL
@@ -150,7 +145,6 @@ generateServer <- function(){
         if("A" %in% cn){
           nm2 <- "A"
         } else{
-          #nm2 <- cn[dplyr::first(grep("Pho",ignore.case = T,x = cn))]
           nm2 <- cn[1]
         }
         #print(nm2)
@@ -160,6 +154,10 @@ generateServer <- function(){
                          label = "Assimilation Var:",
                          choices = cn,selected = nm2)
     })
+    
+    #allow the user to pick a variable by which the data will be divided
+    #used for splitting multiple curves apart from one data file
+    #preferentially, initialize it to the "elapsed" column, most useful from licor data files
     output$cutColChoices <- shiny::renderUI({
       cn <- colnames(firstIn())
       nm2 <- NULL
@@ -176,13 +174,14 @@ generateServer <- function(){
                          label = "Splitting var:",
                          choices = cn,selected = nm2)
     })
+    #if you've split up the data, you'll need to pick which slice to eat
     output$cutopts <- shiny::renderUI({
       shiny::selectInput(inputId="chosenCut",
                          label="Which curve?",
                          choices = cutChoices(),
                          selected = 1)
     })
-    
+    #render gammastar calculation based on the selected plant and or input data
     gs <- shiny::reactive({
       gs1 <- calcGammaStar(input$c,input$dHa,input$tleaf,input$oxygen)
       if(!is.null(input$chosenPreset) & input$gammastarCalc){
@@ -196,12 +195,14 @@ generateServer <- function(){
         shinyWidgets::updateAutonumericInput(session,"gammastar",value = gs())
       }
     })
+    #here's the drop down menu for preset gammastar calculations
     output$presetOpts <- shiny::renderUI({
       shiny::selectInput(inputId="chosenPreset",
                          label="Preset plant",
                          choices = unname(unlist(presets[,1])),
                          selected = "N. tabacum")
     })
+    #box for calculating your own gammastar values
     gx <- shiny::observe({
       print(input$chosenPreset)
       if(!is.null(input$chosenPreset)){
@@ -244,11 +245,8 @@ generateServer <- function(){
     locks <- shiny::reactive({
       c(input$vcmaxlock,input$jlock,input$tpulock,input$gmlock,input$rdlock,input$aglock,input$aslock)
     })
-    # to renderPlot to indicate that:
-    #
-    # 1. It is "reactive" and therefore should be automatically
-    #    re-executed when inputs (input$bins) change
-    # 2. Its output type is a plot
+    
+    #display the plot
     output$distPlot <- plotly::renderPlotly({
       #inFile <- input$myFile
       params <- c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as)
@@ -256,15 +254,17 @@ generateServer <- function(){
         a <- ggplot2::ggplot(df(),mapping=ggplot2::aes(x="Cc",y="A"))+
           ggplot2::theme_classic()
       }else{
-        #print("Making graph!")
+        print("Making graph!")
         df_disableApplied <- df()[enabled(),]
         a <- reconstituteGraph(df_disableApplied, nameParams(params),
                                tleaf=input$tleaf,name_assimilation=input$yax, name_ci=input$xax,pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
+        print("graph reconstituted!")
         
       }
-      plotly::config(plotly::layout(plotly::ggplotly(a,source="A"),
+      print("beginning plotly config!")
+      plotly::config(plotly::layout(plotly::ggplotly(a+ggplot2::labs(x="x",y="y"),source="A"),
         yaxis=list(
-          title=plotly::TeX("A~(\\mu mol~m^{-2}s^{-1})") 
+          title=plotly::TeX("A~(\\mu mol~m^{-2}s^{-1})")
         ),
         xaxis=list(
           title=plotly::TeX("Cc~(Pa)")
@@ -274,6 +274,8 @@ generateServer <- function(){
           x=0,y=1.01
         )
       ),mathjax="cdn")
+      
+      
         
       
     })
