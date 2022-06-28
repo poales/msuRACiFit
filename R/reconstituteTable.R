@@ -22,11 +22,10 @@ reconstituteTable <- function(data,fitParams,name_assimilation="A", name_ci=c("p
   loc <- min(stats::na.omit(locs))
   pCi <- data[,loc]
   
-
-  pCi <- pCi[[1]]
   if(!grepl(pattern="p",tolower(colnames(pCi)))){
     pCi <- pCi /1000000*1000*pressure
   }
+  pCi <- pCi[[1]]
   AData <- data[name_assimilation]
   Kc <- exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf))))
   Ko <- exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))
