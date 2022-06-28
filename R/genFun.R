@@ -95,7 +95,6 @@ genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pC
     
     Cc <- pCi - y/gm
     if(ignoreTPU){
-      #print("ignoring TPU!")
       y.out <- AFuncMinusTPU(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar) 
     }else{
       y.out <- AFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar)   
