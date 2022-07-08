@@ -185,7 +185,7 @@ generateServer <- function(){
     gs <- shiny::reactive({
       gs1 <- calcGammaStar(input$c,input$dHa,input$tleaf,input$oxygen)
       if(!is.null(input$chosenPreset) & input$gammastarCalc){
-        if(input$chosenPreset != "N. tabacum")
+        if(input$chosenPreset != "Nicotiana tabacum" & input$chosenPreset != "Arabidopsis thaliana")
           gs1 <- gs1 * 1000 / 1000000 * input$patm
       }
       gs1
@@ -200,7 +200,7 @@ generateServer <- function(){
       shiny::selectInput(inputId="chosenPreset",
                          label="Preset plant",
                          choices = unname(unlist(presets[,1])),
-                         selected = "N. tabacum")
+                         selected = "Nicotiana tabacum")
     })
     #box for calculating your own gammastar values
     gx <- shiny::observe({
