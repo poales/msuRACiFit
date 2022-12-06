@@ -9,6 +9,8 @@
 #' @param assimilationData The measured assimilation data
 #' @param tleaf Leaf temperature in celsius
 #' @param ignoreTPU Whether to fit TPU or not. Leave false if you don't know what you're doing!
+#' @param Kc Michaelis-Menten constant for carboxylation.
+#' @param Ko Michaelis-Menten constant for oxygenation.
 #' @name genFun
 
 

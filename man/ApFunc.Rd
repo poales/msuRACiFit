@@ -4,7 +4,7 @@
 \alias{ApFunc}
 \title{ApFunc}
 \usage{
-ApFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm, gammastar)
+ApFunc(Cc, aG, aS, Rd, TPU, gammastar, coef)
 }
 \arguments{
 \item{Cc}{CO2 concentration at the site of carboxylation}
@@ -15,15 +15,11 @@ ApFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm, gammastar)
 
 \item{Rd}{Day respiration}
 
-\item{Vcmax}{Michaelis-Menten VMax for carboxylation}
-
-\item{j}{Maximum rate of electron transport given current conditions}
-
 \item{TPU}{Rate of triose phosphate usage}
 
-\item{gm}{Mesophyll conductance to carbon}
-
 \item{gammastar}{Cc compensation point}
+
+\item{coef}{passed from CoefFunc}
 }
 \description{
 Generates the P-limited data
