@@ -11,7 +11,9 @@ genFun(
   pCi,
   assimilationData,
   tleaf = 25,
-  ignoreTPU = F
+  ignoreTPU = F,
+  Kc = exp(35.9774 - (80.99/(0.008314 * (273.15 + tleaf)))),
+  Ko = exp(12.3772 - (23.72/(0.008314 * (273.15 + tleaf))))
 )
 }
 \arguments{
@@ -28,6 +30,10 @@ genFun(
 \item{tleaf}{Leaf temperature in celsius}
 
 \item{ignoreTPU}{Whether to fit TPU or not. Leave false if you don't know what you're doing!}
+
+\item{Kc}{Michaelis-Menten constant for carboxylation.}
+
+\item{Ko}{Michaelis-Menten constant for oxygenation.}
 }
 \description{
 This function accepts some of the parameters required to fit an A/Ci curve.
