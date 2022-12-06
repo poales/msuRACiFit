@@ -28,12 +28,21 @@ AFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar){
   ac = AcFunc(Cc, Rd, Vcmax, Kc,Ko,O2, coef)
   aj = AjFunc(Cc, aG, aS, Rd, j, gammastar, coef)
   ap = ApFunc(Cc, aG, aS, Rd, TPU, gammastar, coef)
-  tot <- tibble::tibble(ac,aj,ap,.name_repair = "minimal") #put them in a table to help pick which one is smallest
-  l <- apply(tot,1,function(x)which.min(abs(x+Rd))) #pick which one is closest to Rd - this is the pivot point when you go below 0, not absolute 0
-  res <- 1:length(l) #create output vector
-  for(i in 1:length(l)){
-    res[i] <- tot[[i,l[[i]]]] #input the selected lowest value into the output vector
+  out <- c(1:length(ac)) #create the output vector right away
+  for(i in 1:length(out)){ #no table, which saves a lot of time. work on the vectors.
+    out[i] <- switch( #pick which one is the closest to Rd, then immediately add it to the outputs
+      which.min( #we can't just use min because it has to pivot around rd, so we need abs and +rd there
+        abs(
+          c(
+            ac[i],
+            aj[i],
+            ap[i]
+          ) + Rd
+        )
+      ),ac[i],aj[i],ap[i]
+    )
+    
   }
-  return(res)
+  return(out)
 }
 
