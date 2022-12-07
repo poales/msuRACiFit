@@ -26,8 +26,6 @@ genFun <- function(forceValues = c(NA,NA,NA,NA,NA,NA,NA),gammastar=3.52,O2=21,pC
   gammastar <- gammastar
   O <- O2
   y <- assimilationData
-  Kc <- exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf))))
-  Ko <- exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))
   if(ignoreTPU){
     fn <- function(params) {
       params <- as.list(params)

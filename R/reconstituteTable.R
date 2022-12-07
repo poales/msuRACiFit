@@ -37,7 +37,7 @@ reconstituteTable <- function(data,fitParams,name_assimilation="A", name_ci=c("p
   # ag <- fitParams[6]
   # as <- fitParams[7]
   coef <- with(fitParams,{
-    CoefFunc( aG , gammastar, Cc )
+    CoefFunc(ag, gammastar, unlist(pCi) - unlist(AData)/gm)
   })
   data2 <- with(fitParams,{
     tibble::tibble(A = unlist(AData), "pCi" = pCi,"Cc"=unlist(pCi) - unlist(AData)/gm)

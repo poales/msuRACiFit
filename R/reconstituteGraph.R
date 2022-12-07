@@ -39,19 +39,19 @@ reconstituteGraph <- function(data,fitParams,name_assimilation="A", name_ci=c("p
   # jdat <- tibble::tibble(A=AjFunc(Ccs,ag,as,rd,vcmax,j,tpu,gm,gammastar),Cc=Ccs)
   # pdat <- tibble::tibble(A=ApFunc(Ccs,ag,as,rd,vcmax,j,tpu,gm,gammastar),Cc=Ccs)
   coef <- with(fitParams,{
-    CoefFunc( aG , gammastar, Ccs)
+    CoefFunc(ag, gammastar, Ccs)
   })
   data2 <- with(fitParams,{
     tibble::tibble(A = unlist(AData), "pCi" = pCi,"Cc"=unlist(pCi) - unlist(AData)/gm)
   })
   cdat <- with(fitParams,{
-    tibble::tibble(A=AcFunc(data2$Cc,rL,VcMax,Kc,Ko,O2,coef),Cc = Ccs)
+    tibble::tibble(A=AcFunc(Ccs,rL,VcMax,Kc,Ko,O2,coef),Cc = Ccs)
   })
   jdat <- with(fitParams,{
-    tibble::tibble(A=AjFunc(data2$Cc,ag,as,rL,J,gammastar,coef),Cc=Ccs)
+    tibble::tibble(A=AjFunc(Ccs,ag,as,rL,J,gammastar,coef),Cc=Ccs)
   })
   pdat <- with(fitParams,{
-    tibble::tibble(A=ApFunc(data2$Cc,ag,as,rL,TPU,gammastar,coef),Cc=Ccs)
+    tibble::tibble(A=ApFunc(Ccs,ag,as,rL,TPU,gammastar,coef),Cc=Ccs)
   })
   #remap data rq
   # data2 <- tibble::tibble(A = unlist(AData),"Cc"=unlist(pCi) - unlist(AData)/gm)

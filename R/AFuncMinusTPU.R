@@ -16,7 +16,7 @@
 #'@name AFuncMinusTPU
 
 AFuncMinusTPU <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar){
-  coef <- CoefFunc( aG , gammastar, Cc )
+  coef <- CoefFunc(aG, gammastar, Cc)
   ac = AcFunc(Cc, Rd, Vcmax, Kc,Ko,O2, coef)
   aj = AjFunc(Cc, aG, aS, Rd, j, gammastar, coef)
   out <- c(1:length(ac)) #create the output vector right away

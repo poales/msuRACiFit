@@ -36,7 +36,7 @@ fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3
     print("forceValues length is not correct, defaulting to NA")
     forceValues <- rep(NA,7)
   }
-  myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2*pressure/101,pCi=pCi,assimilationData=AData,tleaf=tleaf,ignoreTPU=ignoreTPU)
+  myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2*pressure/101,pCi=pCi[[1]],assimilationData=AData[[1]],tleaf=tleaf,ignoreTPU=ignoreTPU)
   guessFlag <- F
   if(length(initialGuess)!=7){
     initialGuess <- genGuess(AData)
