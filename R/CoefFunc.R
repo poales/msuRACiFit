@@ -6,6 +6,6 @@
 #'@param Cc Concentration of carbon dioxide at the site of carboxylation
 #'@name CoefFunc
 
-CoefFunc <- function( aG , gammastar, Cc ){
+CoefFunc <- function(aG, gammastar, Cc ){
   1-((1-aG)*gammastar/Cc)
 }
