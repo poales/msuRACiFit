@@ -36,17 +36,20 @@ reconstituteTable <- function(data,fitParams,name_assimilation="A", name_ci=c("p
   # rd <- fitParams[5]
   # ag <- fitParams[6]
   # as <- fitParams[7]
+  coef <- with(fitParams,{
+    CoefFunc(ag, gammastar, unlist(pCi) - unlist(AData)/gm)
+  })
   data2 <- with(fitParams,{
     tibble::tibble(A = unlist(AData), "pCi" = pCi,"Cc"=unlist(pCi) - unlist(AData)/gm)
   })
   cdat <- with(fitParams,{
-    tibble::tibble(A=AcFunc(data2$Cc,ag,as,rL,VcMax,J,TPU,gm,Kc,Ko,O2,gammastar),Cc = data2$Cc)
+    tibble::tibble(A=AcFunc(data2$Cc,rL,VcMax,Kc,Ko,O2,coef),Cc = data2$Cc)
   })
   jdat <- with(fitParams,{
-    tibble::tibble(A=AjFunc(data2$Cc,ag,as,rL,VcMax,J,TPU,gm,gammastar),Cc=data2$Cc)
+    tibble::tibble(A=AjFunc(data2$Cc,ag,as,rL,J,gammastar,coef),Cc=data2$Cc)
   })
   pdat <- with(fitParams,{
-    tibble::tibble(A=ApFunc(data2$Cc,ag,as,rL,VcMax,J,TPU,gm,gammastar),Cc=data2$Cc)
+    tibble::tibble(A=ApFunc(data2$Cc,ag,as,rL,TPU,gammastar,coef),Cc=data2$Cc)
   })
   # data2 <- tibble::tibble(A = unlist(AData), "pCi" = pCi,"Cc"=unlist(pCi) - unlist(AData)/gm)
   # cdat <- tibble::tibble(A=AcFunc(data2$Cc,ag,as,rd,vcmax,j,tpu,gm,Kc,Ko,O2,gammastar),Cc = data2$Cc)

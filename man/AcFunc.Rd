@@ -4,24 +4,14 @@
 \alias{AcFunc}
 \title{AcFunc}
 \usage{
-AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm, Kc, Ko, O2, gammastar)
+AcFunc(Cc, Rd, Vcmax, Kc, Ko, O2, coef)
 }
 \arguments{
 \item{Cc}{CO2 concentration at the site of carboxylation}
 
-\item{aG}{The proportion of glycerate carbon that exits photorespiration as glycine}
-
-\item{aS}{The proportion of glycerate carbon that exits photorespiration as serine}
-
 \item{Rd}{Day respiration}
 
 \item{Vcmax}{Michaelis-Menten VMax for carboxylation}
-
-\item{j}{Maximum rate of electron transport given current conditions}
-
-\item{TPU}{Rate of triose phosphate usage}
-
-\item{gm}{Mesophyll conductance to carbon}
 
 \item{Kc}{Michaelis-Menten parameter, binding coeff for carbon}
 
@@ -29,7 +19,7 @@ AcFunc(Cc, aG, aS, Rd, Vcmax, j, TPU, gm, Kc, Ko, O2, gammastar)
 
 \item{O2}{Oxygen concentration}
 
-\item{gammastar}{Cc compensation point}
+\item{coef}{Passed from CoefFunc}
 }
 \description{
 Generates the C-limited data
