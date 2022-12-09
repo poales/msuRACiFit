@@ -86,7 +86,6 @@ generateServer <- function(){
         }
       }
       if(!is.null(df())){
-        #print("Fitting!")
         df_disableApplied <- df()[enabled(),]
 
         fitdat <- fitACi(data=tibble::tibble(df_disableApplied),input$gammastar,O2 = input$oxygen,initialGuess = params,forceValues = locks2,bound_l = lbounds,
@@ -106,10 +105,52 @@ generateServer <- function(){
       }
         
     })
+    #firstIn <- shiny::bindEvent(shiny::reactive({
+    firstIn <- shiny::bindEvent(shiny::reactive({
+      #this stores the full data loaded in. we will manipulate the data later. 
+      #There's a possibility that we try to cut up the data etc which means we will want to be able to refer back to this at a later time, so we have to store it in.
+      #It should only react to the input file changing.
+      if(is.null(input$myFile)){
+        NULL
+      }else{
+        interpFile(input$myFile$datapath)
+      }
+    #}),input$myFile)
+    },label="firstin"),input$myFile,ignoreNULL=F)
+    df <- shiny::reactive({
+      req(firstIn())
+      #if nothing else, give it firstIn
+      #if something else, modify firstIn
+      if(input$cutEnable & input$cutColChosen != ""){
+        if(input$cutColChosen != ""){
+          x2 <- ss_runsetter(firstIn(),aslist=T,threshold=input$cutLength,column=input$cutColChosen)
+          cutChoices(1:length(x2))
+          enabled(rep(TRUE,nrow(x2[[as.numeric(input$chosenCut)]])))
+          x2[[as.numeric(input$chosenCut)]]
+        } else{
+          cutChoices(1)
+          if(!is.null(firstIn())){
+            enabled(rep(TRUE,nrow(firstIn())))
+          }
+          
+          firstIn()
+        }
+        
+      }else{
+        cutChoices(1)
+        if(!is.null(firstIn())){
+          enabled(rep(TRUE,nrow(firstIn())))
+        }
+        
+        firstIn()
+        
+      }
+    })
     #create the drop down box for selecting the x axis variable, and initialize it
-    output$xax <- shiny::renderUI({
-      cn <- colnames(df())
+    xax_reactive <- shiny::bindEvent(shiny::reactive({
+      cn <- NULL
       if(!is.null(df())){
+        cn <- colnames(df())
         #find the items with ci in them
         ci_find <- grep("ci",ignore.case = T,x = cn)
         
@@ -129,12 +170,16 @@ generateServer <- function(){
                            label = "Ci Variable:",
                            choices = cn,selected = nm)
       } else{
+        warning("Determined df was null")
         #initialize the xaxis variable to the first variable and make them look for it
         shiny::selectInput(inputId = "xax",
                            label = "Ci Variable:",
-                           choices = cn)
+                           choices = "Ci")
       }
-
+    }),df())
+    output$xax <- shiny::renderUI({
+      req(xax_reactive())
+      xax_reactive()
     })
     
     #create the drop down menu for the y axis variable and initialize it, preferably to "A"
@@ -147,33 +192,36 @@ generateServer <- function(){
         } else{
           nm2 <- cn[1]
         }
-        #print(nm2)
-        
+        shiny::selectInput(inputId = "yax",
+                           label = "Assimilation Var:",
+                           choices = cn,selected = nm2)
+      }else{
+        shiny::selectInput(inputId = "yax",
+                           label = "Assimilation Var:",
+                           choices = "A")
       }
-      shiny::selectInput(inputId = "yax",
-                         label = "Assimilation Var:",
-                         choices = cn,selected = nm2)
     })
     
     #allow the user to pick a variable by which the data will be divided
     #used for splitting multiple curves apart from one data file
     #preferentially, initialize it to the "elapsed" column, most useful from licor data files
-    output$cutColChoices <- shiny::renderUI({
+    output$cutColChoices <- shiny::bindEvent(shiny::renderUI({
       cn <- colnames(firstIn())
       nm2 <- NULL
       if(!is.null(firstIn())){
         if("elapsed" %in% cn){
           nm2 <- "elapsed"
-        } else{
+        } else if(!is.null(input$xax)){
+          
+        }else{
           nm2 <- cn[1]
         }
-        #print(nm2)
         
       }
       shiny::selectInput(inputId = "cutColChosen",
                          label = "Splitting var:",
                          choices = cn,selected = nm2)
-    })
+    }),firstIn(),input$cutEnable)
     #if you've split up the data, you'll need to pick which slice to eat
     output$cutopts <- shiny::renderUI({
       shiny::selectInput(inputId="chosenCut",
@@ -204,7 +252,6 @@ generateServer <- function(){
     })
     #box for calculating your own gammastar values
     gx <- shiny::observe({
-      print(input$chosenPreset)
       if(!is.null(input$chosenPreset)){
         presetRow <- presets[presets$plant==input$chosenPreset,]
         shinyWidgets::updateAutonumericInput(session,"c",value = unname(unlist(presetRow$c)))
@@ -213,35 +260,7 @@ generateServer <- function(){
       
       
     })
-    firstIn <- shiny::reactive({
-      #this stores the full data loaded in. we will manipulate the data later. 
-      #There's a possibility that we try to cut up the data etc which means we will want to be able to refer back to this at a later time, so we have to store it in.
-      #It should only react to the input file changing.
-      if(is.null(input$myFile)){
-        NULL
-      }else{
-        interpFile(input$myFile$datapath)
-      }
-    })
-    df <- shiny::reactive({
-      #if nothing else, give it firstIn
-      #if something else, modify firstIn
-      if(input$cutEnable){
-        #print("remaking df")
-        x2 <- ss_runsetter(firstIn(),aslist=T,threshold=input$cutLength,column=input$cutColChosen)
-        cutChoices(1:length(x2))
-        enabled(rep(TRUE,nrow(x2[[as.numeric(input$chosenCut)]])))
-        x2[[as.numeric(input$chosenCut)]]
-      }else{
-        if(!is.null(firstIn())){
-          #print("remaking df")
-          enabled(rep(TRUE,nrow(firstIn())))
-        }
-        
-        firstIn()
-        
-      }
-    })
+    
     locks <- shiny::reactive({
       c(input$vcmaxlock,input$jlock,input$tpulock,input$gmlock,input$rdlock,input$aglock,input$aslock)
     })
@@ -249,19 +268,16 @@ generateServer <- function(){
     #display the plot
     output$distPlot <- plotly::renderPlotly({
       #inFile <- input$myFile
+      req(input$xax,input$yax)
       params <- c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as)
       if(is.null(df())){
         a <- ggplot2::ggplot(df(),mapping=ggplot2::aes(x="Cc",y="A"))+
           ggplot2::theme_classic()
       }else{
-        print("Making graph!")
         df_disableApplied <- df()[enabled(),]
         a <- reconstituteGraph(df_disableApplied, nameParams(params),
                                tleaf=input$tleaf,name_assimilation=input$yax, name_ci=input$xax,pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
-        print("graph reconstituted!")
-        
       }
-      print("beginning plotly config!")
       plotly::config(plotly::layout(plotly::ggplotly(a+ggplot2::labs(x="x",y="y"),source="A"),
         yaxis=list(
           title=plotly::TeX("A~(\\mu mol~m^{-2}s^{-1})")
@@ -280,12 +296,11 @@ generateServer <- function(){
       
     })
     mytable_pre <- shiny::reactive({
-      
+      req(df(),input$yax,input$xax)
       params <- c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as)
       if(is.null(df()))
         NULL
       else{
-        #print("Making table!")
         reconstituteTable(df(),nameParams(params),
               tleaf=input$tleaf,name_assimilation=input$yax, name_ci=input$xax,pressure=input$patm,gammastar=input$gammastar,O2=input$oxygen,ignoreTPU=input$ignoreTPU)
         
@@ -359,7 +374,6 @@ generateServer <- function(){
     shiny::observeEvent(input$stop, {
       shiny::stopApp(message("App stopped"))
     })
-    #output$x11 = DT::renderDataTable(iris[,1:3], server = FALSE, selection = 'single')
 
 
   }
