@@ -5,8 +5,10 @@ Authors@R: c(person("Alan", "McClain", email = "mcclai54@msu.edu", role = c("aut
 	person("Luke", "Gregory", email = "grego215@msu.edu", role = "aut"),
 	person("Thomas", "Sharkey", email = "tsharkey@msu.edu", role = "aut"),
 	person("Berkley", "Walker", email = "berkley@msu.edu", role = "aut"))
-Description: Fits parameters 
-Depends: R (>= 4.0)
+Description: When provided with assimilation/co2 concentration data, fits the Farquhar, von Caemmerer, Berry and Sharkey A/Ci model. Outputs the fitting parameters, 
+	with optional outputs of the graph and fitting table including point-by-point residuals. A shiny app is available to provide a graphical fitting environment more
+	familiar to those used to excel fitting tools.
+Depends: R (>= 4.2)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

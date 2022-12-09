@@ -118,7 +118,7 @@ generateServer <- function(){
     #}),input$myFile)
     },label="firstin"),input$myFile,ignoreNULL=F)
     df <- shiny::reactive({
-      req(firstIn())
+      shiny::req(firstIn())
       #if nothing else, give it firstIn
       #if something else, modify firstIn
       if(input$cutEnable & input$cutColChosen != ""){
@@ -178,7 +178,7 @@ generateServer <- function(){
       }
     }),df())
     output$xax <- shiny::renderUI({
-      req(xax_reactive())
+      shiny::req(xax_reactive())
       xax_reactive()
     })
     
@@ -268,7 +268,7 @@ generateServer <- function(){
     #display the plot
     output$distPlot <- plotly::renderPlotly({
       #inFile <- input$myFile
-      req(input$xax,input$yax)
+      shiny::req(input$xax,input$yax)
       params <- c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as)
       if(is.null(df())){
         a <- ggplot2::ggplot(df(),mapping=ggplot2::aes(x="Cc",y="A"))+
@@ -296,7 +296,7 @@ generateServer <- function(){
       
     })
     mytable_pre <- shiny::reactive({
-      req(df(),input$yax,input$xax)
+      shiny::req(df(),input$yax,input$xax)
       params <- c(input$vcmax,input$j,input$tpu,input$gm,input$rd,input$ag,input$as)
       if(is.null(df()))
         NULL

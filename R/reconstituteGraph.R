@@ -10,6 +10,7 @@
 #' @param pressure Atmospheric pressure in kPa
 #' @param tleaf The leaf temperature, in celsius
 #' @param ignoreTPU Whether to fit TPU or not. Leave false if you don't know what you're doing!
+#' @importFrom rlang .data
 #' @name reconstituteGraph
 #' @export
 
@@ -57,9 +58,9 @@ reconstituteGraph <- function(data,fitParams,name_assimilation="A", name_ci=c("p
   # data2 <- tibble::tibble(A = unlist(AData),"Cc"=unlist(pCi) - unlist(AData)/gm)
   if(ignoreTPU){
     myPlot <- ggplot2::ggplot()+
-      ggplot2::geom_point(data2,mapping=ggplot2::aes(x=Cc,y=A),size=3)+
-      ggplot2::geom_point(cdat,mapping=ggplot2::aes(x=Cc,y=A,color="Rubisco"),size=1)+
-      ggplot2::geom_point(jdat,mapping=ggplot2::aes(x=Cc,y=A,color="RuBP-Regen"),size=1)+
+      ggplot2::geom_point(data2,mapping=ggplot2::aes(x=.data$Cc,y=.data$A),size=3)+
+      ggplot2::geom_point(cdat,mapping=ggplot2::aes(x=.data$Cc,y=.data$A,color="Rubisco"),size=1)+
+      ggplot2::geom_point(jdat,mapping=ggplot2::aes(x=.data$Cc,y=.data$A,color="RuBP-Regen"),size=1)+
       #ggplot2::geom_point(pdat,mapping=ggplot2::aes(x=Cc,y=A,color="P"),size=1)+
       ggplot2::scale_color_manual(values=c("red","blue","orange"))+
       ggplot2::ylim(0,max(data2$A)*1.5)+
@@ -68,10 +69,10 @@ reconstituteGraph <- function(data,fitParams,name_assimilation="A", name_ci=c("p
       ggplot2::xlab(rlang::expr(italic("Cc")~"(Pa)"))
   }else{
     myPlot <- ggplot2::ggplot()+
-      ggplot2::geom_point(data2,mapping=ggplot2::aes(x=Cc,y=A),size=3)+
-      ggplot2::geom_point(cdat,mapping=ggplot2::aes(x=Cc,y=A,color="Rubisco"),size=1)+
-      ggplot2::geom_point(jdat,mapping=ggplot2::aes(x=Cc,y=A,color="RuBP-Regen"),size=1)+
-      ggplot2::geom_point(pdat,mapping=ggplot2::aes(x=Cc,y=A,color="TPU"),size=1)+
+      ggplot2::geom_point(data2,mapping=ggplot2::aes(x=.data$Cc,y=.data$A),size=3)+
+      ggplot2::geom_point(cdat,mapping=ggplot2::aes(x=.data$Cc,y=.data$A,color="Rubisco"),size=1)+
+      ggplot2::geom_point(jdat,mapping=ggplot2::aes(x=.data$Cc,y=.data$A,color="RuBP-Regen"),size=1)+
+      ggplot2::geom_point(pdat,mapping=ggplot2::aes(x=.data$Cc,y=.data$A,color="TPU"),size=1)+
       ggplot2::scale_color_manual(values=c("red","blue","orange"))+
       ggplot2::ylim(0,max(data2$A)*1.5)+
       ggplot2::theme_classic()+
