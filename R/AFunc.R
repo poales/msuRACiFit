@@ -33,11 +33,7 @@ AFunc <- function(Cc, aG, aS, Rd, Vcmax, j, TPU, gm,Kc,Ko,O2,gammastar){
     out[i] <- switch( #pick which one is the closest to Rd, then immediately add it to the outputs
       which.min( #we can't just use min because it has to pivot around rd, so we need abs and +rd there
         abs(
-          c(
-            ac[i],
-            aj[i],
-            ap[i]
-          ) + Rd
+          c(ac[i],aj[i],ap[i]) + Rd
         )
       ),ac[i],aj[i],ap[i]
     )
