@@ -2,7 +2,7 @@
 #'
 #'Names relevant parameters and returns a tibble
 #'@param params The fitting parameters
-#'@name namaParams
+#'@name nameParams
 
 
 nameParams <- function(params){
