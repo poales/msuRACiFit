@@ -1,6 +1,6 @@
 Package: msuRACiFit
 Title: Fitting A/Ci data
-Version: 1.1.2
+Version: 1.2.0
 Authors@R: c(person("Alan", "McClain", email = "mcclai54@msu.edu", role = c("aut", "cre")),
 	person("Luke", "Gregory", email = "grego215@msu.edu", role = "aut"),
 	person("Thomas", "Sharkey", email = "tsharkey@msu.edu", role = "aut"),
@@ -28,4 +28,4 @@ Imports:
 	readLicorData
 Remotes:
 	poales/readLicorData
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3

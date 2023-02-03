@@ -36,6 +36,7 @@ generateUi <- function(){
                 shiny::actionButton("stop", "Stop", class = "btn-danger", onclick = "setTimeout(function(){window.close();}, 100);"),
                 shiny::actionButton("genGuess","Generate guesses!"),
                 shiny::actionButton("fit","Fit!"),
+                shiny::actionButton("smartFit","Smart-fit"),
                 shiny::downloadButton("write","Write!")
              ),
              shiny::fluidRow(),
@@ -305,7 +306,10 @@ generateUi <- function(){
               ),
               shiny::numericInput("oxygen",label="Oxygen%",value=21),
               shiny::checkboxInput("ignoreTPU",label="Ignore TPU",value = F),
-              shiny::numericInput("maxiter",label="Maximum Fitting Iterations",value=250)
+              shiny::numericInput("maxiter",label="Maximum Fitting Iterations",value=250),
+              shiny::numericInput("minsmartgm",label = "Smart-fit gm minimum",value=0.2),
+              shiny::numericInput("maxsmartgm",label = "Smart-fit gm maximum", value=20),
+              shiny::numericInput("maxsmartiter",label = "Smart-fit gm samples",value=10)
             )
             
         
