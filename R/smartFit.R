@@ -56,9 +56,9 @@ smartFit <- function(data_assimilation,data_ci,ci_as_pressure=T,gm_min = 0.5, gm
                        rL = rep(0,gm_samples),
                        ag = rep(0,gm_samples),
                        as = rep(0,gm_samples))
-  
+  #loop starts here####
   for(iter_count in 1:gm_samples){
-    #loop starts here
+    
     forceValues_iter <- forceValues
     forceValues_iter[4] <- gms_in[iter_count]
     
@@ -70,10 +70,10 @@ smartFit <- function(data_assimilation,data_ci,ci_as_pressure=T,gm_min = 0.5, gm
     initialGuess <- initialGuess[is.na(forceValues_iter)]
     bound_l_iter <- bound_l[is.na(forceValues_iter)]
     bound_h_iter <- bound_h[is.na(forceValues_iter)]
-    #print(maxiter)
-    #print(initialGuess)
+
+    
     myfit <- minpack.lm::nls.lm(par=initialGuess,lower=bound_l_iter,upper = bound_h_iter,fn = myFun,control = minpack.lm::nls.lm.control(maxiter=maxiter,maxfev = 1250,ptol=0,ftol=0))
-    #print(myfit)
+
     my_params <- c(0,0,0,0,0,0,0)
     j <- 1
     for(i in 1:7){
@@ -90,15 +90,15 @@ smartFit <- function(data_assimilation,data_ci,ci_as_pressure=T,gm_min = 0.5, gm
     
     myFun <- genFun(forceValues = forceValues_iter,gammastar=gammastar,O2=O2*pressure/101,pCi=data_ci,assimilationData=data_assimilation,tleaf=tleaf,ignoreTPU=ignoreTPU)
     initialGuess <- my_params
+
     
     #Process the guesses, and the bounds, for which values have been forced
     initialGuess <- initialGuess[is.na(forceValues_iter)]
     bound_l_iter <- bound_l[is.na(forceValues_iter)]
     bound_h_iter <- bound_h[is.na(forceValues_iter)]
-    #print(maxiter)
-    #print(initialGuess)
-    myfit_2 <- minpack.lm::nls.lm(par=my_params,lower=bound_l_iter,upper = bound_h_iter,fn = myFun,control = minpack.lm::nls.lm.control(maxiter=maxiter,maxfev = 1250,ptol=0,ftol=0))
-    #print(myfit)
+
+    myfit_2 <- minpack.lm::nls.lm(par=initialGuess,lower=bound_l_iter,upper = bound_h_iter,fn = myFun,control = minpack.lm::nls.lm.control(maxiter=maxiter,maxfev = 1250,ptol=0,ftol=0))
+
     my_params_2 <- c(0,0,0,0,0,0,0)
     j <- 1
     for(i in 1:7){
@@ -113,13 +113,13 @@ smartFit <- function(data_assimilation,data_ci,ci_as_pressure=T,gm_min = 0.5, gm
     params_out[iter_count,] <- as.list(my_params_2)
     fits_out[[iter_count]] <- myfit_2
   }
-  #pick the iteration which had the lowest ssr
+  #pick the iteration which had the lowest ssr####
   chosen <- which.min(ssr_out)
   final_params <- params_out[chosen,]
   final_fit <- fits_out[[chosen]]
   
   
-  #outside of the loop here, we don't want to include this in the loop as it will prevent the second iteration from working properly
+  #outside of the loop here, we don't want to include this in the loop as it will prevent the second iteration from working properly####
   if(ignoreTPU){
     final_params[3] <- NA
   }
