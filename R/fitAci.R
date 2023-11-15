@@ -19,7 +19,8 @@
 
 fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3.52,O2=21,pressure = 101,tleaf=25,initialGuess=NA,
                    forceValues = c(NA,NA,NA,NA,NA,NA,NA),bound_l=c(1,1,1,.001,.001,0,0),
-                   bound_h=c(1000,1000,1000,30,30,1,.75),ignoreTPU=F,maxiter=250){
+                   bound_h=c(1000,1000,1000,30,30,1,.75),ignoreTPU=F,maxiter=250,Kc=exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf)))),
+                   Ko=exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))){
   if(!tibble::is_tibble(data)){
     data <- tibble::tibble(data)
   }
@@ -36,7 +37,7 @@ fitACi <- function(data,name_assimilation ="A",name_ci=c("pCi","Ci"),gammastar=3
     print("forceValues length is not correct, defaulting to NA")
     forceValues <- rep(NA,7)
   }
-  myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2*pressure/101,pCi=pCi[[1]],assimilationData=AData[[1]],tleaf=tleaf,ignoreTPU=ignoreTPU)
+  myFun <- genFun(forceValues = forceValues,gammastar=gammastar,O2=O2*pressure/101,pCi=pCi[[1]],assimilationData=AData[[1]],tleaf=tleaf,ignoreTPU=ignoreTPU,Kc = Kc, Ko = Ko)
   guessFlag <- F
   if(length(initialGuess)!=7){
     initialGuess <- genGuess(AData)

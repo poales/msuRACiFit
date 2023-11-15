@@ -32,7 +32,8 @@
 
 smartFit <- function(data_assimilation,data_ci,ci_as_pressure=T,gm_min = 0.5, gm_max = 20, gm_samples = 10,gammastar=3.52,O2=21,pressure = 101,tleaf=25,
                    forceValues = c(NA,NA,NA,NA,NA,NA,NA),bound_l=c(1,1,1,.001,.001,0,0),
-                   bound_h=c(1000,1000,1000,30,30,1,.75),ignoreTPU=F,maxiter=250){
+                   bound_h=c(1000,1000,1000,30,30,1,.75),ignoreTPU=F,maxiter=250,Kc=exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf)))),
+                   Ko=exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))){
 
   if(gm_samples <2){
     stop("No point using smartFit when you don't want to sample more than one gm")
@@ -63,7 +64,7 @@ smartFit <- function(data_assimilation,data_ci,ci_as_pressure=T,gm_min = 0.5, gm
     forceValues_iter[4] <- gms_in[iter_count]
     
     #begin first iteration
-    myFun <- genFun(forceValues = forceValues_iter,gammastar=gammastar,O2=O2*pressure/101,pCi=data_ci,assimilationData=data_assimilation,tleaf=tleaf,ignoreTPU=ignoreTPU)
+    myFun <- genFun(forceValues = forceValues_iter,gammastar=gammastar,O2=O2*pressure/101,pCi=data_ci,assimilationData=data_assimilation,tleaf=tleaf,ignoreTPU=ignoreTPU,Kc=Kc,Ko=Ko)
     initialGuess <- genGuess(data_assimilation)
     
     #Process the guesses, and the bounds, for which values have been forced
@@ -88,7 +89,7 @@ smartFit <- function(data_assimilation,data_ci,ci_as_pressure=T,gm_min = 0.5, gm
     #now second iteration - fit again, with using the params from before as an initial guess
     forceValues_iter[4] <- NA #unlock gm
     
-    myFun <- genFun(forceValues = forceValues_iter,gammastar=gammastar,O2=O2*pressure/101,pCi=data_ci,assimilationData=data_assimilation,tleaf=tleaf,ignoreTPU=ignoreTPU)
+    myFun <- genFun(forceValues = forceValues_iter,gammastar=gammastar,O2=O2*pressure/101,pCi=data_ci,assimilationData=data_assimilation,tleaf=tleaf,ignoreTPU=ignoreTPU,Kc=Kc,Ko=Ko)
     initialGuess <- my_params
 
     
