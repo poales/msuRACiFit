@@ -52,7 +52,7 @@ smartFit <- function(data_assimilation,data_ci,ci_as_pressure=T,gm_min = 0.5, gm
   gms_in <- seq(from=gm_min,to=gm_max,length.out=gm_samples)
   ssr_out <- rep(0,gm_samples)
   fits_out <- vector("list",gm_samples)
-  params_out <- tibble::tibble(Vcmax = rep(0,gm_samples),
+  params_out <- tibble::tibble(VcMax = rep(0,gm_samples),
                        J = rep(0,gm_samples),
                        TPU = rep(0,gm_samples),
                        gm = rep(0,gm_samples),
