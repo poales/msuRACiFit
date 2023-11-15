@@ -19,7 +19,9 @@ smartFit(
   bound_l = c(1, 1, 1, 0.001, 0.001, 0, 0),
   bound_h = c(1000, 1000, 1000, 30, 30, 1, 0.75),
   ignoreTPU = F,
-  maxiter = 250
+  maxiter = 250,
+  Kc = exp(35.9774 - (80.99/(0.008314 * (273.15 + tleaf)))),
+  Ko = exp(12.3772 - (23.72/(0.008314 * (273.15 + tleaf))))
 )
 }
 \arguments{
@@ -52,6 +54,10 @@ smartFit(
 \item{ignoreTPU}{Whether to fit TPU or not. Leave false if you don't know what you're doing!}
 
 \item{maxiter}{How many iterations to allow for the fitting algorithm. If you have a lot of points, large values for maxiter will take a long time!}
+
+\item{Kc}{Michaelis-menten kinetic parameter for carboxylation}
+
+\item{Ko}{Michaelis-menten kinetic parameter for oxygenation}
 }
 \description{
 Fit A/Ci curves iteratively, sampling several different gm values. Fitting is done in two steps for

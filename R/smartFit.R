@@ -19,6 +19,8 @@
 #' @param bound_h the maximum value to be considered for each parameter
 #' @param ignoreTPU Whether to fit TPU or not. Leave false if you don't know what you're doing!
 #' @param maxiter How many iterations to allow for the fitting algorithm. If you have a lot of points, large values for maxiter will take a long time!
+#' @param Kc Michaelis-menten kinetic parameter for carboxylation
+#' @param Ko Michaelis-menten kinetic parameter for oxygenation
 #' @name smartFit
 #' @export
 
