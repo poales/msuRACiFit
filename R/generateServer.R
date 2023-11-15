@@ -223,7 +223,7 @@ generateServer <- function(){
                            choices = cn,selected = nm)
       } else{
         warning("Determined df was null")
-        #initialize the xaxis variable to the first variable and make them look for it
+        #placeholder only
         shiny::selectInput(inputId = "xax",
                            label = "Ci Variable:",
                            choices = "Ci")

@@ -38,7 +38,7 @@ smartFit <- function(data_assimilation,data_ci,ci_as_pressure=T,gm_min = 0.5, gm
     stop("No point using smartFit when you don't want to sample more than one gm")
   }
   if(!ci_as_pressure){
-    pCi <- pCi /1000000*1000*pressure
+    data_ci <- data_ci /1000000*1000*pressure
   }
   if(length(forceValues)!=7){
     print("forceValues length is not correct, defaulting to NA")
