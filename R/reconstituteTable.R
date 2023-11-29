@@ -10,11 +10,14 @@
 #' @param pressure Atmospheric pressure in kPa
 #' @param tleaf The leaf temperature, in celsius
 #' @param ignoreTPU Whether to fit TPU or not. Leave false if you don't know what you're doing!
+#' @param Kc Michaelis-menten kinetic parameter for carboxylation
+#' @param Ko Michaelis-menten kinetic parameter for oxygenation
 #' @name reconstituteTable
 #' @export
 
 
-reconstituteTable <- function(data,fitParams,name_assimilation="A", name_ci=c("pCi","Ci"),gammastar=3.52,O2=21,pressure=101,tleaf=25,ignoreTPU=F){
+reconstituteTable <- function(data,fitParams,name_assimilation="A", name_ci=c("pCi","Ci"),gammastar=3.52,O2=21,pressure=101,tleaf=25,ignoreTPU=F,Kc=exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf)))),
+                              Ko=exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))){
   if(!tibble::is_tibble(data)){
     data <- tibble::tibble(data)
   }
@@ -27,15 +30,6 @@ reconstituteTable <- function(data,fitParams,name_assimilation="A", name_ci=c("p
   }
   pCi <- pCi[[1]]
   AData <- data[name_assimilation]
-  Kc <- exp(35.9774-(80.99 / (0.008314*(273.15 + tleaf))))
-  Ko <- exp(12.3772-(23.72 / (0.008314*(273.15 + tleaf))))
-  # vcmax <- fitParams[1]
-  # j <- fitParams[2]
-  # tpu <- fitParams[3]
-  # gm <- fitParams[4]
-  # rd <- fitParams[5]
-  # ag <- fitParams[6]
-  # as <- fitParams[7]
   coef <- with(fitParams,{
     CoefFunc(ag, gammastar, unlist(pCi) - unlist(AData)/gm)
   })

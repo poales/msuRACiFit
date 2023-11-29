@@ -13,7 +13,9 @@ reconstituteTable(
   O2 = 21,
   pressure = 101,
   tleaf = 25,
-  ignoreTPU = F
+  ignoreTPU = F,
+  Kc = exp(35.9774 - (80.99/(0.008314 * (273.15 + tleaf)))),
+  Ko = exp(12.3772 - (23.72/(0.008314 * (273.15 + tleaf))))
 )
 }
 \arguments{
@@ -34,6 +36,10 @@ reconstituteTable(
 \item{tleaf}{The leaf temperature, in celsius}
 
 \item{ignoreTPU}{Whether to fit TPU or not. Leave false if you don't know what you're doing!}
+
+\item{Kc}{Michaelis-menten kinetic parameter for carboxylation}
+
+\item{Ko}{Michaelis-menten kinetic parameter for oxygenation}
 }
 \description{
 Take fit data and send it back through to build a table with limiting curves
